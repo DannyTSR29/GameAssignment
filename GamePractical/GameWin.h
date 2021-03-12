@@ -22,9 +22,6 @@ public:
 	int r;
 	int g;
 	int	b;
-	int x;
-	int x_direction;
-	float y;
 	int	speed;
 	int hp;
 

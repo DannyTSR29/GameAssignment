@@ -9,21 +9,26 @@ lvl2::~lvl2() {
 
 }
 
-void lvl2::inti() {
+void lvl2::Init() {
 }
 
-void lvl2::update() {
-	if (GameInput::getInstance()->isKeyDown(DIK_0))
+void lvl2::Update() {
+	if (GameInput::getInstance()->KeyboardKeyPressed(DIK_0))
 	{
 		GameStateManager::getInstance()->changeGameState(0);
 	}
 }
 
-void lvl2::draw() {
+void lvl2::FixedUpdate() {
 
 }
 
-void lvl2::release() {
+void lvl2::Draw() {
+
+}
+
+void lvl2::Release() {
 
 
 }
+

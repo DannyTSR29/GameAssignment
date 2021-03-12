@@ -12,6 +12,7 @@ private:
 	BYTE  diKeys[256] = { 0 };
 	HRESULT result;
 	static GameInput* instance;
+	int previousKeyState[256];
 
 	GameInput();
 	~GameInput();
@@ -19,7 +20,9 @@ public:
 	static GameInput* getInstance();
 	static void releaseInstance();
 
-	void playerControl();
-	bool isKeyDown(int index);
+	void ReadKeyboard();
+	bool KeyboardKeyPressed(int code);
+	bool KeyboardKeyHold(int code);
+	bool KeyboardKeyHoldRelease(int code);
 };
 

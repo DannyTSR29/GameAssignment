@@ -8,7 +8,6 @@
 #include "lvl1.h"
 #include "lvl2.h"
 //--------------------------------------------------------------------
-
 int main()
 {
 	GameWin* dWin = dWin->getInstance();
@@ -26,12 +25,11 @@ int main()
 	while (dWin->gameloop())
 	{
 		//Input always first 
-		dInput->playerControl();
-		
-		dManager->update();
-
+		dInput->ReadKeyboard();
 		//	Begin the scene
 		dGraphic->begin();
+
+		dManager->update();
 
 		dManager->draw();
 

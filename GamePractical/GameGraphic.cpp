@@ -36,8 +36,8 @@ GameGraphic::GameGraphic() {
 	d3dPP.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dPP.BackBufferFormat = D3DFMT_UNKNOWN;
 	d3dPP.BackBufferCount = 1;
-	d3dPP.BackBufferWidth = 626;
-	d3dPP.BackBufferHeight = 313;
+	d3dPP.BackBufferWidth = 1252; //626
+	d3dPP.BackBufferHeight = 624; //313
 	d3dPP.hDeviceWindow = GameWin::getInstance()->getHWND();
 
 	//	Create a Direct3D 9 device.

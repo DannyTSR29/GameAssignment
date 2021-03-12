@@ -1,4 +1,5 @@
 #include "GameWin.h"
+#include "Player.h"
 
 GameWin* GameWin::instance = NULL;
 
@@ -23,9 +24,6 @@ GameWin::GameWin()
 	this->r = 0;
 	this->g = 0;
 	this->b = 0;
-	this->x = 200;
-	this->x_direction = 1;
-	this->y = 200;
 	this->speed = 1;
 	this->hp = 100;
 	this->isFullscreen = false;
@@ -61,9 +59,10 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+	
 
 	case WM_KEYDOWN:
-		//printf("%d", wParam);
+		printf("%d", wParam);
 		if (wParam == 27) {
 			PostQuitMessage(0);
 			break;
@@ -126,6 +125,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		}
 		
 
+
 		//	Default handling for other messages.
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -164,7 +164,7 @@ void GameWin::createWindow()
 		Create the Window.
 	*/
 	//	You are to refer to MSDN for each of the parameters details.
-	g_hWnd = CreateWindowEx(0, wndClass.lpszClassName, "Danny's Window", WS_OVERLAPPEDWINDOW, 0, 100, 643, 351, g_hWnd, NULL, hInstance, NULL);
+	g_hWnd = CreateWindowEx(0, wndClass.lpszClassName, "Danny's Window", WS_OVERLAPPEDWINDOW, 0, 100, 1269, 662, g_hWnd, NULL, hInstance, NULL);
 	ShowWindow(g_hWnd, 1);
 
 	//	Some interesting function to try out.

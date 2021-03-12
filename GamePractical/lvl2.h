@@ -28,9 +28,10 @@ public:
 	lvl2();
 	~lvl2();
 
-	void inti();
-	void update();
-	void draw();
-	void release();
+	void Init();
+	void Update();
+	void FixedUpdate();
+	void Draw();
+	void Release();
 };
 

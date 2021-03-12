@@ -1,6 +1,9 @@
 #include "GameInput.h"
 #include "GameWin.h"
+#include "lvl1.h"
 
+int tempPosX = 0;
+float tempXDir = 0;
 
 GameInput* GameInput::instance = NULL;
 
@@ -44,7 +47,7 @@ GameInput::~GameInput() {
 	dInput = NULL;
 }
 
-void GameInput::playerControl() {
+void GameInput::ReadKeyboard() {
 	result = dInputKeyboardDevice->GetDeviceState(256, diKeys);
 	if (FAILED(result)) {
 		if ((result == DIERR_INPUTLOST) || (result == DIERR_NOTACQUIRED))
@@ -52,37 +55,41 @@ void GameInput::playerControl() {
 			//	Acquire the device.
 			dInputKeyboardDevice->Acquire();
 		}
-	}
-	if (diKeys[DIK_UP] & 0x80)
-	{
-		GameWin::getInstance()->y--;
-		printf("UP\n");
-	}
 
-	else if (diKeys[DIK_DOWN] & 0x80)
-	{
-		GameWin::getInstance()->y++;
-		printf("Down\n");
 	}
-
-	if (diKeys[DIK_LEFT] & 0x80)
-	{
-		GameWin::getInstance()->x--;
-		GameWin::getInstance()->x_direction = -1;
-		GameWin::getInstance()->hp--;
-		printf("LEFT\n");
-	}
-
-	else if (diKeys[DIK_RIGHT] & 0x80)
-	{
-		GameWin::getInstance()->x++;
-		GameWin::getInstance()->x_direction = 1;
-		GameWin::getInstance()->hp++;
-		printf("RIGHT\n");
-	}
-
 }
 
-bool GameInput::isKeyDown(int index) {
-	return diKeys[index] & 0x80;
+bool GameInput::KeyboardKeyHold(int code)
+{
+	if (diKeys[code] & 0x80)
+	{
+		return true;
+	}
+
+	return false;
 }
+
+bool GameInput::KeyboardKeyHoldRelease(int code)
+{
+	if (diKeys[code] & 0x80)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool GameInput::KeyboardKeyPressed(int code)
+{
+	if (diKeys[code] & 0x80)
+	{
+		previousKeyState[code] = 1;
+	}
+	else if (previousKeyState[code] == 1)
+	{
+		previousKeyState[code] = 0;
+		return true;
+	}
+	return false;
+}
+

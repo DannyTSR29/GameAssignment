@@ -21,32 +21,43 @@ void GameStateManager::releaseInstance() {
 }
 GameStateManager::GameStateManager() {
 	lvl1* dlvl1 = new lvl1;
-	dlvl1->inti();
+	dlvl1->Init();
 
 	lvl2* dlvl2 = new lvl2;
-	dlvl2->inti();
+	dlvl2->Init();
 
 	gameStateList.push_back(dlvl1);
 	gameStateList.push_back(dlvl2);
 
 	currentGameState = dlvl1;
 
+	gTimer = new GameTimer();
+	gTimer->Init(60);
 }
 
 GameStateManager::~GameStateManager() {
+	delete gTimer;
+	gTimer = NULL;
+
 	for (int i = 0; i < gameStateList.size(); i++)
 	{
 		delete gameStateList[i];
 		gameStateList[i] = NULL;
 	}
+
 }
 
 void GameStateManager::update() {
-	currentGameState->update();
+	currentGameState->Update();
+	int frameToUpdate = gTimer->framesToUpdate();
+	for (int i = 0; i < frameToUpdate; i++)
+	{
+		currentGameState->FixedUpdate();
+	}
 }
 
 void GameStateManager::draw() {
-	currentGameState->draw();
+	currentGameState->Draw();
 }
 
 void GameStateManager::changeGameState(int index) {
