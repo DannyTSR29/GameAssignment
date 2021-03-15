@@ -20,6 +20,7 @@ private:
 	D3DXVECTOR2 direction;
 	D3DXVECTOR2 position;
 	D3DXVECTOR2 directionmove;
+	bool lockMove;
 	float rotation;
 	bool isMoving;
 	float speed;

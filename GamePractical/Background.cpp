@@ -1,4 +1,5 @@
 #include "Background.h"
+#include <stdio.h>
 
 Background::Background() {
 	sprite = NULL;
@@ -6,8 +7,9 @@ Background::Background() {
 	texture1 = NULL;
 	position.x = 1078;
 	position.y = 220;
-	speed = (1.0f / 8) * 30;
+	speed = (1.0f) * 30;
 	isMoving = true;
+	lockMove = false;
 }
 
 Background::~Background() {
@@ -55,12 +57,29 @@ void Background::Init() {
 
 void Background::Update() {
 	
+	D3DXVECTOR2 velocity;
 	if (isMoving)
 	{
-		direction.x = -1;
-		direction.y = 0;
-		D3DXVECTOR2 velocity = direction * (speed / 60.0f);
-		position += velocity;
+		if (position.x <= 1078 && lockMove==false) {
+			direction.x = -1;
+			direction.y = 0;
+			velocity = direction * (speed / 60.0f);
+			position += velocity;
+			if (position.x <= 885) {
+				lockMove = true;
+				velocity.x = 0;
+				velocity.y = 0;
+			}
+		}
+		else if (position.x >= 883 && lockMove==true) {
+			direction.x = 1;
+			direction.y = 0;
+			velocity = direction * (speed / 60.0f);
+			position += velocity;
+			if (position.x >= 1078) {
+				lockMove = false;
+			}
+		}
 	}
 	
 }
