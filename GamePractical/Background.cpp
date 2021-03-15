@@ -4,6 +4,10 @@ Background::Background() {
 	sprite = NULL;
 	texture = NULL;
 	texture1 = NULL;
+	position.x = 1078;
+	position.y = 220;
+	speed = (1.0f / 8) * 30;
+	isMoving = true;
 }
 
 Background::~Background() {
@@ -39,17 +43,13 @@ void Background::Init() {
 
 	spriteRect1.left = 0;
 	spriteRect1.top = 0;
-	spriteRect1.right = 1252;
-	spriteRect1.bottom = 624;
-
+	spriteRect1.right = 90;
+	spriteRect1.bottom = 137;
 
 	textRect.left = 0;
 	textRect.top = -100;
 	textRect.right = 0;
 	textRect.bottom = 0;
-
-	positionA.x = 100;
-	positionA.y = 100;
 
 }
 
@@ -57,7 +57,8 @@ void Background::Update() {
 	
 	if (isMoving)
 	{
-		animationTimer += 1 / 60.0f;
+		direction.x = -1;
+		direction.y = 0;
 		D3DXVECTOR2 velocity = direction * (speed / 60.0f);
 		position += velocity;
 	}
@@ -75,7 +76,8 @@ void Background::Draw() {
 	//BACKGROUND
 	//	Sprite rendering. Study the documentation.
 	sprite->Draw(texture, &spriteRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
-	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &positionA);
+
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &position);
 	sprite->SetTransform(&mat);
 	sprite->Draw(texture1, &spriteRect1, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 	

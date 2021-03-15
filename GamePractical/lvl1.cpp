@@ -25,6 +25,7 @@ void lvl1::Init() {
 
 void lvl1::Update() {
 	dPlayer->Update();
+	dBackGround->Update();
 }
 
 void lvl1::FixedUpdate() {
