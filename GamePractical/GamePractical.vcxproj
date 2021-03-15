@@ -152,6 +152,7 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="GameGraphic.cpp" />
     <ClCompile Include="GameInput.cpp" />
+    <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GameWin.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="GameGraphic.h" />
     <ClInclude Include="GameInput.h" />
+    <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="GameTimer.h" />

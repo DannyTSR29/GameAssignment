@@ -7,7 +7,7 @@ Player::Player()
 	sprite = NULL;
 	texture = NULL;
 	rotation = 0;
-	positionX = 350;
+	position.x = 350;
 
 	characterCurrentFrame = 0;
 	animationTimer = 0;
@@ -20,8 +20,8 @@ Player::Player()
 	force = 0;
 	forceTimer = 0;
 	maxTimer = 20;
+	maxAnimationTimer = 70;
 	lockForce = false;
-	spacePress = true;
 
 }
 
@@ -73,7 +73,6 @@ void Player::Init()
 
 void Player::Update()
 {
-
 	//Player movement update
 	if (GameInput::getInstance()->KeyboardKeyHold(DIK_LEFT))
 	{
@@ -82,6 +81,7 @@ void Player::Update()
 		direction.x = -1;
 		direction.y = 0;
 		printf("LEFT\n");
+		animationDefault[0] = 1;
 
 	}
 	
@@ -92,6 +92,7 @@ void Player::Update()
 		direction.x = 1;
 		direction.y = 0;
 		printf("RIGHT\n");
+		animationDefault[1] = 1;
 	}
 
 	else {
@@ -100,8 +101,6 @@ void Player::Update()
 
 	if (GameInput::getInstance()->KeyboardKeyHold(DIK_SPACE))
 	{
-		spacePress = true;
-
 		if (force < 6 && lockForce == false) {
 			if (forceTimer < maxTimer) {
 				forceTimer += 1;
@@ -136,29 +135,43 @@ void Player::Update()
 		}
 	}
 
-	//HOW TO DETECT SPACEKEY WHEN IT RELEASE, I USING ELSE AND THE CODITION STRAIGHT AWAY WILL BE SPACEPRESS = FALSE
-	//YIKCHIN
-	else
+	else if (GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] == 2)
 	{
-		spacePress = false;
-	}
-	
-
-	if (spacePress == false)
-	{
+		animationDefault[2] = 1;
 		lockForce = false;
 		force = 0;
 		animationRow = 2;
-		isMoving = true;
 		direction.x = 0;
 		direction.y = 0;
-		//isMoving = false;
+		isMoving = true;
+		if (forceTimer < maxAnimationTimer) {
+			forceTimer++;
+		}
+		printf("timer: %d\n", forceTimer);
+
+		if (forceTimer >= maxAnimationTimer)
+		{
+			printf("more than");
+			forceTimer = 0;
+			GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] = 0;
+			isMoving = false;
+
+		}
 	}
+
+	if (position.x < 120) {
+		position.x = 120;
+	}
+
+	else if (position.x > 590)
+	{
+		position.x = 590;
+	}
+
 }
 
 void Player::FixedUpdate()
 {
-
 	//Player update
 	if (isMoving)
 	{
@@ -166,6 +179,7 @@ void Player::FixedUpdate()
 		D3DXVECTOR2 velocity = direction * (speed / 60.0f);
 		position += velocity;
 	}
+
 	if (animationTimer >= animationDuration)
 	{
 		animationTimer -= animationDuration;
@@ -183,8 +197,41 @@ void Player::FixedUpdate()
 
 }
 
+void Player::AnimationDefault() {
+	if (!isMoving && animationDefault[0] == 1)
+	{
+		characterCurrentFrame = 0;
+		spriteRect.top = 1 * characterSize.y;
+		spriteRect.left = characterSize.x * 0;
+		spriteRect.right = spriteRect.left + characterSize.x;
+		spriteRect.bottom = spriteRect.top + characterSize.y;
+		animationDefault[0] = 0;
+	}
+
+	else if (!isMoving && animationDefault[1] == 1)
+	{
+		characterCurrentFrame = 0;
+		spriteRect.top = 0 * characterSize.y;
+		spriteRect.left = characterSize.x * 0;
+		spriteRect.right = spriteRect.left + characterSize.x;
+		spriteRect.bottom = spriteRect.top + characterSize.y;
+		animationDefault[1] = 0;
+	}
+
+	else if (!isMoving && animationDefault[2] == 1)
+	{
+		characterCurrentFrame = 0;
+		spriteRect.top = 2 * characterSize.y;
+		spriteRect.left = characterSize.x * 0;
+		spriteRect.right = spriteRect.left + characterSize.x;
+		spriteRect.bottom = spriteRect.top + characterSize.y;
+		animationDefault[2] = 0;
+	}
+}
+
 void Player::Draw()
 {
+	AnimationDefault();
 	sprite->Begin(D3DXSPRITE_ALPHABLEND);
 	sprite->SetTransform(&mat);
 	D3DXVECTOR3 startP(87 - 27, 75 - 17, 0);

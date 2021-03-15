@@ -25,6 +25,7 @@ void GameInput::releaseInstance() {
 
 
 GameInput::GameInput() {
+	previousKeyStateSpace[DIK_SPACE] = 0;
 	//Create the Direct Input object.
 	DirectInput8Create(GetModuleHandle(NULL), 0x0800, IID_IDirectInput8, (void**)&dInput, NULL);
 
@@ -63,20 +64,18 @@ bool GameInput::KeyboardKeyHold(int code)
 {
 	if (diKeys[code] & 0x80)
 	{
+		previousKeyStateSpace[code] = 1;
+		printf("1. %d\n", previousKeyStateSpace[code]);
 		return true;
 	}
 
-	return false;
-}
-
-bool GameInput::KeyboardKeyHoldRelease(int code)
-{
-	if (diKeys[code] & 0x80)
+	else if (previousKeyStateSpace[code] == 1)
 	{
-		return false;
+		previousKeyStateSpace[code] = 2;
+		printf("2. %d\n", previousKeyStateSpace[code]);
 	}
 
-	return true;
+	return false;
 }
 
 bool GameInput::KeyboardKeyPressed(int code)
@@ -84,6 +83,7 @@ bool GameInput::KeyboardKeyPressed(int code)
 	if (diKeys[code] & 0x80)
 	{
 		previousKeyState[code] = 1;
+
 	}
 	else if (previousKeyState[code] == 1)
 	{

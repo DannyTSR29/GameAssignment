@@ -19,8 +19,6 @@ private:
 	float rotation;
 
 
-	int positionX;
-
 	int characterCurrentFrame;
 	float animationDuration;
 	float animationTimer;
@@ -33,11 +31,10 @@ private:
 	int force;
 	int forceTimer;
 	int maxTimer;
+	int maxAnimationTimer;
+	int animationDefault[3];
 	bool lockForce;
-	bool fPress;
-
-	//sample
-	bool spacePress;
+	
 
 
 public:
@@ -47,6 +44,7 @@ public:
 	void Init();
 	void Update();
 	void FixedUpdate();
+	void AnimationDefault();
 	void Draw();
 	void Release();
 
