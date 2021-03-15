@@ -1,4 +1,5 @@
 #include "GameStateManager.h"
+#include "GameMenu.h"
 #include "lvl1.h"
 #include "lvl2.h"
 
@@ -20,16 +21,20 @@ void GameStateManager::releaseInstance() {
 	}
 }
 GameStateManager::GameStateManager() {
+	GameMenu* dMenu = new GameMenu;
+	dMenu->Init();
+
 	lvl1* dlvl1 = new lvl1;
 	dlvl1->Init();
 
 	lvl2* dlvl2 = new lvl2;
 	dlvl2->Init();
 
+	gameStateList.push_back(dMenu);
 	gameStateList.push_back(dlvl1);
 	gameStateList.push_back(dlvl2);
 
-	currentGameState = dlvl1;
+	currentGameState = dMenu;
 
 	gTimer = new GameTimer();
 	gTimer->Init(60);

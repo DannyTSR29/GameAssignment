@@ -21,9 +21,9 @@ void GameWin::releaseInstance() {
 
 GameWin::GameWin()
 {
-	this->r = 0;
-	this->g = 0;
-	this->b = 0;
+	this->r = 255;
+	this->g = 255;
+	this->b = 255;
 	this->speed = 1;
 	this->hp = 100;
 	this->isFullscreen = false;

@@ -135,7 +135,6 @@ void Player::Update()
 		}
 	}
 
-	//HOW TO DETECT SPACEKEY WHEN IT RELEASE, I USING ELSE AND THE CODITION STRAIGHT AWAY WILL BE SPACEPRESS = FALSE
 	else if (GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] == 2)
 	{
 		animationDefault[2] = 1;
