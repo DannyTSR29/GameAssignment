@@ -8,7 +8,6 @@ Player::Player()
 	texture = NULL;
 	rotation = 0;
 	position.x = 350;
-
 	characterCurrentFrame = 0;
 	animationTimer = 0;
 	animationDuration = 1.0f / 8;
@@ -41,8 +40,6 @@ void Player::Init()
 	D3DXCreateFont(GameGraphic::getInstance()->getDevice(), 25, 0, 0, 1, false,
 		DEFAULT_CHARSET, OUT_TT_ONLY_PRECIS, DEFAULT_QUALITY,
 		DEFAULT_PITCH | FF_DONTCARE, "Arial", &font);
-
-
 
 	// Texture being used is 64 by 64:
 	spriteCentre = D3DXVECTOR2(0, 0);
