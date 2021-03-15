@@ -63,7 +63,8 @@ void Background::Update() {
 	}
 	
 }
-
+//885
+//1078
 void Background::Draw() {
 	//	Specify alpha blend will ensure that the sprite will render the background with alpha.
 	sprite->Begin(D3DXSPRITE_ALPHABLEND);
