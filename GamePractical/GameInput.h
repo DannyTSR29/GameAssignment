@@ -14,6 +14,7 @@ private:
 	static GameInput* instance;
 	int previousKeyState[256];
 
+
 	GameInput();
 	~GameInput();
 public:
@@ -23,6 +24,8 @@ public:
 	void ReadKeyboard();
 	bool KeyboardKeyPressed(int code);
 	bool KeyboardKeyHold(int code);
-	bool KeyboardKeyHoldRelease(int code);
+
+	int previousKeyStateSpace[256];
+
 };
 

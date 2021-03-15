@@ -62,7 +62,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	
 
 	case WM_KEYDOWN:
-		printf("%d", wParam);
+		//printf("%d", wParam);
 		if (wParam == 27) {
 			PostQuitMessage(0);
 			break;
