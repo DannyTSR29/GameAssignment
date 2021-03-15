@@ -10,7 +10,7 @@ GameWin* GameWin::getInstance()
 	}
 	return instance;
 }
-
+//comi
 void GameWin::releaseInstance() {
 	if (instance != NULL)
 	{
