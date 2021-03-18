@@ -1,13 +1,21 @@
 #pragma once
 #include "GameGraphic.h"
 #include "GameWin.h"
+#include "Basketball.h"
+#include <vector>
+
 
 class Player
 {
 private:
 	LPDIRECT3DTEXTURE9 texture;
+	LPDIRECT3DTEXTURE9 textureForce;
+	LPDIRECT3DTEXTURE9 textureBasketball;
+
 	LPD3DXSPRITE sprite;
 	RECT spriteRect;
+	RECT spriteRectForce;
+	RECT spriteRectBasketball;
 	LPD3DXFONT font;
 	RECT textRect;
 
@@ -15,6 +23,7 @@ private:
 	D3DXMATRIX mat;
 	D3DXVECTOR2 spriteCentre;
 	D3DXVECTOR2 position;
+	D3DXVECTOR2 positionForceBar;
 	D3DXVECTOR2 scaling;
 	float rotation;
 
@@ -34,8 +43,8 @@ private:
 	int maxAnimationTimer;
 	int animationDefault[3];
 	bool lockForce;
-	
 
+	vector <Basketball*> basketballList;
 
 public:
 	Player();

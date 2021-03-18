@@ -4,7 +4,6 @@
 Background::Background() {
 	sprite = NULL;
 	texture = NULL;
-	texture1 = NULL;
 	position.x = 1078;
 	position.y = 220;
 	speed = (1.0f) * 30;
@@ -28,10 +27,10 @@ void Background::Init() {
 		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 255, 255),
 		NULL, NULL, &texture);
 
-	D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "basketballco.jpg", D3DX_DEFAULT, D3DX_DEFAULT,
-		D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
-		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 255, 255),
-		NULL, NULL, &texture1);
+	//D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "basketballco.jpg", D3DX_DEFAULT, D3DX_DEFAULT,
+	//	D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
+	//	D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 255, 255),
+	//	NULL, NULL, &texture1);
 
 	//	Create font. Study the documentation.
 	D3DXCreateFont(GameGraphic::getInstance()->getDevice(), 25, 0, 0, 1, false,
@@ -43,10 +42,10 @@ void Background::Init() {
 	spriteRect.right = 1252;
 	spriteRect.bottom = 624;
 
-	spriteRect1.left = 0;
-	spriteRect1.top = 0;
-	spriteRect1.right = 90;
-	spriteRect1.bottom = 137;
+	//spriteRectForce.left = 0;
+	//spriteRectForce.top = 0;
+	//spriteRectForce.right = 237;
+	//spriteRectForce.bottom = 79;
 
 	textRect.left = 0;
 	textRect.top = -100;
@@ -57,7 +56,7 @@ void Background::Init() {
 
 void Background::Update() {
 	
-	D3DXVECTOR2 velocity;
+	/*D3DXVECTOR2 velocity;
 	if (isMoving)
 	{
 		if (position.x <= 1078 && lockMove==false) {
@@ -80,7 +79,7 @@ void Background::Update() {
 				lockMove = false;
 			}
 		}
-	}
+	}*/
 	
 }
 //885
@@ -96,9 +95,9 @@ void Background::Draw() {
 	//	Sprite rendering. Study the documentation.
 	sprite->Draw(texture, &spriteRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 
-	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &position);
-	sprite->SetTransform(&mat);
-	sprite->Draw(texture1, &spriteRect1, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+	//D3DXMatrixTransformation2D(&mat, NULL, 0.0, &scaling, NULL, NULL, &position);
+	//sprite->SetTransform(&mat);
+	//sprite->Draw(textureForce, &spriteRectForce, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 	
 
 	/*string hpStr = to_string(GameWin::getInstance()->hp);

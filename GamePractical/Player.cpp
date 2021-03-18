@@ -1,13 +1,14 @@
 #include "Player.h"
 #include"GameInput.h"
 #include <stdio.h>
-
+int tempForce;
+D3DXVECTOR2 positionA;
 Player::Player()
 {
 	sprite = NULL;
 	texture = NULL;
+	textureForce = NULL;
 	rotation = 0;
-	position.x = 350;
 	characterCurrentFrame = 0;
 	animationTimer = 0;
 	animationDuration = 1.0f / 8;
@@ -21,7 +22,6 @@ Player::Player()
 	maxTimer = 20;
 	maxAnimationTimer = 70;
 	lockForce = false;
-
 }
 
 Player::~Player()
@@ -36,8 +36,18 @@ void Player::Init()
 		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 0, 0),
 		NULL, NULL, &texture);
 
+	D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "force.jpg", D3DX_DEFAULT, D3DX_DEFAULT,
+		D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
+		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 255, 255),
+		NULL, NULL, &textureForce);
+
+	D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "basketball.png", D3DX_DEFAULT, D3DX_DEFAULT,
+		D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
+		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(247, 247, 247),
+		NULL, NULL, &textureBasketball);
+
 	//	Create font. Study the documentation.
-	D3DXCreateFont(GameGraphic::getInstance()->getDevice(), 25, 0, 0, 1, false,
+	D3DXCreateFont(GameGraphic::getInstance()->getDevice(), 21, 0, 0, 1, false,
 		DEFAULT_CHARSET, OUT_TT_ONLY_PRECIS, DEFAULT_QUALITY,
 		DEFAULT_PITCH | FF_DONTCARE, "Arial", &font);
 
@@ -45,10 +55,11 @@ void Player::Init()
 	spriteCentre = D3DXVECTOR2(0, 0);
 	// Screen position of the sprite
 	position = D3DXVECTOR2(350, 458);
+	positionForceBar = D3DXVECTOR2(250, 558);
 	// Rotate based on the time passed
 	rotation += 0;
 	// Build our matrix to rotate, scale and position our sprite
-	scaling = D3DXVECTOR2(1.0f, 1.0f);
+	scaling = D3DXVECTOR2(0.5f, 0.5f);
 
 	//1443 / 8 = 178
 	//264 / 2 = 126.67
@@ -61,10 +72,19 @@ void Player::Init()
 	spriteRect.right = spriteRect.left + characterSize.x;
 	spriteRect.bottom = spriteRect.top + characterSize.y;
 
+	spriteRectForce.left = 0;
+	spriteRectForce.top = 0;
+	spriteRectForce.right = 237;
+	spriteRectForce.bottom = 79;
+
+	spriteRectBasketball.left = 0;
+	spriteRectBasketball.top = 0;
+	spriteRectBasketball.right = 64;
+	spriteRectBasketball.bottom = 64;
 
 	textRect.left = 0;
-	textRect.top = -75;
-	textRect.right = 50;
+	textRect.top = -73;
+	textRect.right = 60;
 	textRect.bottom = 0;
 }
 
@@ -135,8 +155,6 @@ void Player::Update()
 	else if (GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] == 2)
 	{
 		animationDefault[2] = 1;
-		lockForce = false;
-		force = 0;
 		animationRow = 2;
 		direction.x = 0;
 		direction.y = 0;
@@ -144,11 +162,15 @@ void Player::Update()
 		if (forceTimer < maxAnimationTimer) {
 			forceTimer++;
 		}
-		printf("timer: %d\n", forceTimer);
 
 		if (forceTimer >= maxAnimationTimer)
 		{
-			printf("more than");
+			tempForce = force;
+			force = 0;
+			lockForce = false;
+			Basketball* temp = Basketball::getBasketball(textureBasketball);
+			temp->init(position);
+			basketballList.push_back(temp);
 			forceTimer = 0;
 			GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] = 0;
 			isMoving = false;
@@ -176,25 +198,27 @@ void Player::FixedUpdate()
 		D3DXVECTOR2 velocity = direction * (speed / 60.0f);
 		position += velocity;
 	}
-
 	if (animationTimer >= animationDuration)
 	{
 		animationTimer -= animationDuration;
 		characterCurrentFrame++;
 		characterCurrentFrame %= 8;
 	}
-
 	
 	spriteRect.top = animationRow * characterSize.y;
 	spriteRect.left = characterSize.x * characterCurrentFrame;
 	spriteRect.right = spriteRect.left + characterSize.x;
 	spriteRect.bottom = spriteRect.top + characterSize.y;
 
-	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &scaling, NULL, NULL, &position);
+	for (int i = 0; i < basketballList.size(); i++)
+	{
+		basketballList[i]->update(tempForce);
+	}
+
 
 }
 
-void Player::AnimationDefault() {
+void Player::AnimationDefault(){
 	if (!isMoving && animationDefault[0] == 1)
 	{
 		characterCurrentFrame = 0;
@@ -217,9 +241,9 @@ void Player::AnimationDefault() {
 
 	else if (!isMoving && animationDefault[2] == 1)
 	{
-		characterCurrentFrame = 0;
+		characterCurrentFrame = 7;
 		spriteRect.top = 2 * characterSize.y;
-		spriteRect.left = characterSize.x * 0;
+		spriteRect.left = characterSize.x * 7;
 		spriteRect.right = spriteRect.left + characterSize.x;
 		spriteRect.bottom = spriteRect.top + characterSize.y;
 		animationDefault[2] = 0;
@@ -230,18 +254,45 @@ void Player::Draw()
 {
 	AnimationDefault();
 	sprite->Begin(D3DXSPRITE_ALPHABLEND);
+	//PLAYER
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &position);
 	sprite->SetTransform(&mat);
 	D3DXVECTOR3 startP(87 - 27, 75 - 17, 0);
 	sprite->Draw(texture, &spriteRect, &startP, NULL, D3DCOLOR_XRGB(255, 255, 255));
+
+
+	//FORCE BAR
+	D3DXVECTOR3 startF(-50, -160, 0);
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &scaling, NULL, NULL, &position);
+	sprite->SetTransform(&mat);
+	sprite->Draw(textureForce, &spriteRectForce, NULL, &startF, D3DCOLOR_XRGB(255, 255, 255));
+
+	//FORCE NUMBER
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &position);
+	sprite->SetTransform(&mat);
 	string forceStr = to_string(force);
 	font->DrawText(sprite, forceStr.c_str(), -1, &textRect, DT_CENTER | DT_NOCLIP, D3DCOLOR_XRGB(255, 255, 255));
+
+	for (int i = 0; i < basketballList.size(); i++)
+	{
+		basketballList[i]->draw(sprite); 
+	}
+
 	sprite->End();
 }
 
 void Player::Release()
 {
+	font->Release();
+	font = NULL;
+	Basketball::releaseAllBasketball();
+	textureBasketball->Release();
+	textureBasketball = NULL;
+	textureForce->Release();
+	textureForce = NULL;
 	sprite->Release();
 	sprite = NULL;
 	texture->Release();
 	texture = NULL;
+
 }
