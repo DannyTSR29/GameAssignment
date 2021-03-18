@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Basketball.cpp" />
     <ClCompile Include="GameGraphic.cpp" />
     <ClCompile Include="GameInput.cpp" />
     <ClCompile Include="GameMenu.cpp" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
+    <ClInclude Include="Basketball.h" />
     <ClInclude Include="GameGraphic.h" />
     <ClInclude Include="GameInput.h" />
     <ClInclude Include="GameMenu.h" />

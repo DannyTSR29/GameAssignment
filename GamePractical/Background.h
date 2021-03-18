@@ -5,10 +5,8 @@ class Background
 {
 private:
 	LPDIRECT3DTEXTURE9 texture;
-	LPDIRECT3DTEXTURE9 texture1;
 	LPD3DXSPRITE sprite;
 	RECT spriteRect;
-	RECT spriteRect1;
 	LPD3DXFONT font;
 	RECT textRect;
 
