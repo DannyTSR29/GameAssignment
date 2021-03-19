@@ -1,5 +1,4 @@
 #include "Basketball.h"
-int forceTimer = 0;
 
 vector<Basketball*>Basketball::poolList;
 Basketball* Basketball::getBasketball(LPDIRECT3DTEXTURE9 texture) {
@@ -45,45 +44,34 @@ void Basketball::release() {
 
 }
 
-void Basketball::init(D3DXVECTOR2 position) {
+void Basketball::init(D3DXVECTOR2 position, D3DXVECTOR2 velocityBasketball) {
 	this->position = position; 
 	isUsing = true;
+	tempVelocityBasketball = velocityBasketball;
 }
+
 void Basketball::hide() {
 	isUsing = false;
 }
 
-void Basketball::update(int force) {
+void Basketball::update() {
 	if (isUsing == false) {
 		return;
 	}
 
-	float speed = (force) * 30;
-	D3DXVECTOR2 direction;
-	direction.x = 1;
-	direction.y = 0;
-	D3DXVECTOR2 velocity = direction * (speed / 60.0f);
-	int maxAnimationTimer = 30;
+	position += tempVelocityBasketball;
+	tempVelocityBasketball *= 0.9;
+	printf("2.basketball X: %.2f\n", tempVelocityBasketball.x);
+	printf("2.basketball Y: %.2f\n", tempVelocityBasketball.y);
 
-	if (forceTimer < maxAnimationTimer) {
-		forceTimer++;
-	}
-
-	if (forceTimer >= 30)
+	if (tempVelocityBasketball.x <= 1)
 	{
-		printf("poS: %.2f\n", velocity.x);
-		velocity.x *= 0.9;
-		printf("poS: %.2f\n", velocity.x);
-		forceTimer = 0;
+		tempVelocityBasketball.x *= 2;
+		tempVelocityBasketball.y += 5;
 	}
-	position += velocity;
 
-
-	if (position.x > 1195)
-	{
-		isUsing = false;
-	}
 }
+
 void Basketball::draw(LPD3DXSPRITE sprite) {
 	if (isUsing == false) {
 		return;

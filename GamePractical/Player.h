@@ -27,15 +27,16 @@ private:
 	D3DXVECTOR2 scaling;
 	float rotation;
 
-
-	int characterCurrentFrame;
-	float animationDuration;
-	float animationTimer;
-	int animationRow;
-	bool isMoving;
-	float speed;
 	D3DXVECTOR2 direction;
 	D3DXVECTOR2 characterSize;
+	int characterCurrentFrame;
+	int animationRow;
+	float animationDuration;
+	float animationTimer;
+	float speed;
+	float speedBasketball;
+	bool isMoving;
+
 
 	int force;
 	int forceTimer;
@@ -43,6 +44,10 @@ private:
 	int maxAnimationTimer;
 	int animationDefault[3];
 	bool lockForce;
+
+	int tempForce;
+	D3DXVECTOR2 velocityBasketball;
+	D3DXVECTOR2 directionBasketball;
 
 	vector <Basketball*> basketballList;
 
