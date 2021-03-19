@@ -1,8 +1,7 @@
 #include "Player.h"
 #include"GameInput.h"
 #include <stdio.h>
-int tempForce;
-D3DXVECTOR2 positionA;
+
 Player::Player()
 {
 	sprite = NULL;
@@ -17,6 +16,8 @@ Player::Player()
 	isMoving = false;
 	direction.x = 0;
 	direction.y = 1;
+	directionBasketball.x = 1;
+	directionBasketball.y = -1;
 	force = 0;
 	forceTimer = 0;
 	maxTimer = 20;
@@ -166,15 +167,19 @@ void Player::Update()
 		if (forceTimer >= maxAnimationTimer)
 		{
 			tempForce = force;
+			speedBasketball = (tempForce / animationDuration) * 120;
+			velocityBasketball = directionBasketball * (speedBasketball / 60.0f);
+
 			force = 0;
 			lockForce = false;
+
 			Basketball* temp = Basketball::getBasketball(textureBasketball);
-			temp->init(position);
+			temp->init(position, velocityBasketball);
 			basketballList.push_back(temp);
-			forceTimer = 0;
+
 			GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] = 0;
 			isMoving = false;
-
+			forceTimer = 0;
 		}
 	}
 
@@ -210,9 +215,10 @@ void Player::FixedUpdate()
 	spriteRect.right = spriteRect.left + characterSize.x;
 	spriteRect.bottom = spriteRect.top + characterSize.y;
 
+	
 	for (int i = 0; i < basketballList.size(); i++)
 	{
-		basketballList[i]->update(tempForce);
+		basketballList[i]->update();
 	}
 
 

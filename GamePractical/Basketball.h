@@ -15,9 +15,7 @@ private:
 	D3DXMATRIX mat;
 	D3DXVECTOR2 position;
 
-	//sample
-	D3DXVECTOR2 direction;
-	D3DXVECTOR2 velocity;
+	D3DXVECTOR2 tempVelocityBasketball;
 
 	bool isUsing;
 
@@ -27,10 +25,10 @@ public:
 	static Basketball* getBasketball(LPDIRECT3DTEXTURE9 texture);
 	static void releaseAllBasketball();
 
-	void init(D3DXVECTOR2 position);
+	void init(D3DXVECTOR2 position, D3DXVECTOR2 velocityBasketball);
 	void hide();
 
-	void update(int force);
+	void update();
 	void draw(LPD3DXSPRITE sprite);
 
 
