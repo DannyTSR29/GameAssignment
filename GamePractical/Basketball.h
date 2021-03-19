@@ -16,6 +16,7 @@ private:
 	D3DXVECTOR2 position;
 
 	D3DXVECTOR2 tempVelocityBasketball;
+	D3DXVECTOR2 gravity;
 
 	bool isUsing;
 

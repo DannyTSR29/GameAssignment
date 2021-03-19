@@ -31,6 +31,8 @@ void Basketball::releaseAllBasketball() {
 }
 
 Basketball::Basketball() {
+	gravity = D3DXVECTOR2(0,3);
+
 }
 
 Basketball::~Basketball() {
@@ -59,17 +61,15 @@ void Basketball::update() {
 		return;
 	}
 
-	position += tempVelocityBasketball;
-	tempVelocityBasketball *= 0.9;
 	printf("2.basketball X: %.2f\n", tempVelocityBasketball.x);
 	printf("2.basketball Y: %.2f\n", tempVelocityBasketball.y);
 
-	if (tempVelocityBasketball.x <= 1)
+	//WHY THE BALL WILL MOVE SO FAST
+	if ((tempVelocityBasketball.y * 30) / 2)
 	{
-		tempVelocityBasketball.x *= 2;
-		tempVelocityBasketball.y += 5;
+		tempVelocityBasketball += gravity;
 	}
-
+	position += tempVelocityBasketball;
 }
 
 void Basketball::draw(LPD3DXSPRITE sprite) {
