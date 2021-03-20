@@ -8,6 +8,17 @@
 #include "lvl1.h"
 #include "lvl2.h"
 //--------------------------------------------------------------------
+
+//b2Vec2 getTrajectoryPoint(b2Vec2& startingPosition, b2Vec2& startingVelocity, float n)
+//{
+//	//velocity and gravity are given per second but we want time step values here
+//	float t = 1 / 60.0f; // seconds per time step (at 60fps)
+//	b2Vec2 stepVelocity = t * startingVelocity; // m/s
+//	b2Vec2 stepGravity = t * t * m_world->GetGravity(); // m/s/s
+//
+//	return startingPosition + n * stepVelocity + 0.5f * (n * n + n) * stepGravity;
+//}
+
 int main()
 {
 	GameWin* dWin = dWin->getInstance();

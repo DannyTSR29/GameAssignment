@@ -65,14 +65,14 @@ bool GameInput::KeyboardKeyHold(int code)
 	if (diKeys[code] & 0x80)
 	{
 		previousKeyStateSpace[code] = 1;
-		printf("1. %d\n", previousKeyStateSpace[code]);
+		//printf("1. %d\n", previousKeyStateSpace[code]);
 		return true;
 	}
 
 	else if (previousKeyStateSpace[code] == 1)
 	{
 		previousKeyStateSpace[code] = 2;
-		printf("2. %d\n", previousKeyStateSpace[code]);
+		//printf("2. %d\n", previousKeyStateSpace[code]);
 	}
 
 	return false;

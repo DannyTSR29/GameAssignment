@@ -15,7 +15,7 @@ Player::Player()
 	animationRow = 0;
 	isMoving = false;
 	direction.x = 0;
-	direction.y = 1;
+	direction.y = 0;
 	directionBasketball.x = 1;
 	directionBasketball.y = -1;
 	force = 0;
@@ -167,9 +167,10 @@ void Player::Update()
 		if (forceTimer >= maxAnimationTimer)
 		{
 			tempForce = force;
-			speedBasketball = (tempForce / animationDuration) * 120;
-			velocityBasketball = directionBasketball * (speedBasketball / 60.0f);
+			//speedBasketball = (tempForce / animationDuration) * 60;
+			//velocityBasketball = directionBasketball * (speedBasketball / 60);
 
+			velocityBasketball = D3DXVECTOR2(directionBasketball.x * (force * 10.0f), directionBasketball.y * 40.0f);
 			force = 0;
 			lockForce = false;
 
