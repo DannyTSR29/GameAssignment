@@ -21,11 +21,12 @@ lvl1::~lvl1() {
 void lvl1::Init() {
 	dBackGround->Init();
 	dPlayer->Init();
+
 }
 
 void lvl1::Update() {
-	dPlayer->Update();
 	dBackGround->Update();
+	dPlayer->Update();
 }
 
 void lvl1::FixedUpdate() {

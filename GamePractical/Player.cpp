@@ -2,11 +2,31 @@
 #include"GameInput.h"
 #include <stdio.h>
 
+Player* Player::instance = NULL;
+
+Player* Player::getInstance()
+{
+	if (instance == NULL) {
+		instance = new Player();
+	}
+	return instance;
+}
+//comi
+void Player::releaseInstance() {
+	if (instance != NULL)
+	{
+		delete instance;
+		instance = NULL;
+	}
+}
+
 Player::Player()
 {
 	sprite = NULL;
+	spriteBasketball = NULL;
 	texture = NULL;
 	textureForce = NULL;
+	textureBasketball = NULL;
 	rotation = 0;
 	characterCurrentFrame = 0;
 	animationTimer = 0;
@@ -14,15 +34,14 @@ Player::Player()
 	speed = (1.0f / animationDuration) * 30;
 	animationRow = 0;
 	isMoving = false;
-	direction.x = 0;
-	direction.y = 0;
-	directionBasketball.x = 1;
-	directionBasketball.y = -1;
+	direction = D3DXVECTOR2(0, 0);
+	directionBasketball = D3DXVECTOR2(1, -1);
 	force = 0;
 	forceTimer = 0;
 	maxTimer = 20;
 	maxAnimationTimer = 70;
 	lockForce = false;
+
 }
 
 Player::~Player()
@@ -32,6 +51,7 @@ Player::~Player()
 void Player::Init()
 {
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
+	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteBasketball);
 	D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "char_move.png", D3DX_DEFAULT, D3DX_DEFAULT,
 		D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
 		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 0, 0),
@@ -52,6 +72,7 @@ void Player::Init()
 		DEFAULT_CHARSET, OUT_TT_ONLY_PRECIS, DEFAULT_QUALITY,
 		DEFAULT_PITCH | FF_DONTCARE, "Arial", &font);
 
+
 	// Texture being used is 64 by 64:
 	spriteCentre = D3DXVECTOR2(0, 0);
 	// Screen position of the sprite
@@ -61,6 +82,8 @@ void Player::Init()
 	rotation += 0;
 	// Build our matrix to rotate, scale and position our sprite
 	scaling = D3DXVECTOR2(0.5f, 0.5f);
+
+	positionBasketball = position;
 
 	//1443 / 8 = 178
 	//264 / 2 = 126.67
@@ -77,11 +100,6 @@ void Player::Init()
 	spriteRectForce.top = 0;
 	spriteRectForce.right = 237;
 	spriteRectForce.bottom = 79;
-
-	spriteRectBasketball.left = 0;
-	spriteRectBasketball.top = 0;
-	spriteRectBasketball.right = 64;
-	spriteRectBasketball.bottom = 64;
 
 	textRect.left = 0;
 	textRect.top = -73;
@@ -175,7 +193,7 @@ void Player::Update()
 			lockForce = false;
 
 			Basketball* temp = Basketball::getBasketball(textureBasketball);
-			temp->init(position, velocityBasketball);
+			temp->init(positionBasketball, velocityBasketball);
 			basketballList.push_back(temp);
 
 			GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] = 0;
@@ -222,7 +240,6 @@ void Player::FixedUpdate()
 		basketballList[i]->update();
 	}
 
-
 }
 
 void Player::AnimationDefault(){
@@ -267,7 +284,6 @@ void Player::Draw()
 	D3DXVECTOR3 startP(87 - 27, 75 - 17, 0);
 	sprite->Draw(texture, &spriteRect, &startP, NULL, D3DCOLOR_XRGB(255, 255, 255));
 
-
 	//FORCE BAR
 	D3DXVECTOR3 startF(-50, -160, 0);
 	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &scaling, NULL, NULL, &position);
@@ -280,12 +296,18 @@ void Player::Draw()
 	string forceStr = to_string(force);
 	font->DrawText(sprite, forceStr.c_str(), -1, &textRect, DT_CENTER | DT_NOCLIP, D3DCOLOR_XRGB(255, 255, 255));
 
+	sprite->End();
+
+
+	spriteBasketball->Begin(D3DXSPRITE_ALPHABLEND);
 	for (int i = 0; i < basketballList.size(); i++)
 	{
-		basketballList[i]->draw(sprite); 
-	}
+		basketballList[i]->draw(spriteBasketball);
 
-	sprite->End();
+	}
+	spriteBasketball->End();
+
+
 }
 
 void Player::Release()
@@ -303,3 +325,4 @@ void Player::Release()
 	texture = NULL;
 
 }
+

@@ -4,7 +4,6 @@
 #include "Basketball.h"
 #include <vector>
 
-
 class Player
 {
 private:
@@ -13,12 +12,11 @@ private:
 	LPDIRECT3DTEXTURE9 textureBasketball;
 
 	LPD3DXSPRITE sprite;
+	LPD3DXSPRITE spriteBasketball;
 	RECT spriteRect;
 	RECT spriteRectForce;
-	RECT spriteRectBasketball;
 	LPD3DXFONT font;
 	RECT textRect;
-
 
 	D3DXMATRIX mat;
 	D3DXVECTOR2 spriteCentre;
@@ -44,12 +42,10 @@ private:
 	int maxAnimationTimer;
 	int animationDefault[3];
 	bool lockForce;
-
 	int tempForce;
-	D3DXVECTOR2 velocityBasketball;
-	D3DXVECTOR2 directionBasketball;
 
 	vector <Basketball*> basketballList;
+	static Player* instance;
 
 public:
 	Player();
@@ -62,7 +58,12 @@ public:
 	void Draw();
 	void Release();
 
+	D3DXVECTOR2 positionBasketball;
+	D3DXVECTOR2 velocityBasketball;
+	D3DXVECTOR2 directionBasketball;
 
+	static Player* getInstance();
+	static void releaseInstance();
 };
 
 
