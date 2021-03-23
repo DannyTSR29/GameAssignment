@@ -99,7 +99,8 @@ void Background::Init() {
 	textRect.right = 0;
 	textRect.bottom = 0;
 
-	trans = D3DXVECTOR2(670, 215);
+	trans = D3DXVECTOR2(665, 215);
+	tran1 = D3DXVECTOR2(582, 215);
 }
 
 void Background::Update() {
@@ -164,14 +165,22 @@ void Background::Update() {
 	//}
 	
 }
-
+int a = 0;
 void Background::FixedUpdate() {
 	if (frontScore == 1 && backScore == 1)
 	{
-		score++;
 		frontScore = 0;
-		backScore = 0;
+		backScore = 0;		
+		int i = 7;
+		a++;
+		printf("%d\n", a);
+		if (a >= 12)
+		{
+			score += 1;
+			a = 0;
+		}
 	}
+
 }
 
 void Background::Draw() {
@@ -179,6 +188,11 @@ void Background::Draw() {
 	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, NULL);
 	sprite->SetTransform(&mat);
 	sprite->Draw(texture, &spriteRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &tran1);
+	sprite->SetTransform(&mat);
+	string ballStr = to_string(Player::getInstance()->getBasketballQty());
+	font->DrawText(sprite, ballStr.c_str(), -1, &textRect, DT_CENTER | DT_NOCLIP, D3DCOLOR_XRGB(255, 255, 255));
 
 	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &trans);
 	sprite->SetTransform(&mat);

@@ -35,7 +35,7 @@ private:
 	float speedBasketball;
 	bool isMoving;
 
-
+	int basketballQty;
 	int force;
 	int forceTimer;
 	int maxTimer;
@@ -64,6 +64,9 @@ public:
 
 	static Player* getInstance();
 	static void releaseInstance();
+
+	void setBasketballQty(int qty);
+	int getBasketballQty();
 };
 
 

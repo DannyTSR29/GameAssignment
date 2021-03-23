@@ -37,6 +37,7 @@ private:
 
     D3DXVECTOR2 spriteCentre;
     D3DXVECTOR2 trans;
+    D3DXVECTOR2 tran1;
     D3DXVECTOR2 position;
     D3DXVECTOR2 scaling;
     D3DXVECTOR2 direction;

@@ -20,6 +20,14 @@ void Player::releaseInstance() {
 	}
 }
 
+void Player::setBasketballQty(int qty) {
+	this->basketballQty = qty;
+}
+
+int Player::getBasketballQty() {
+	return basketballQty;
+}
+
 Player::Player()
 {
 	sprite = NULL;
@@ -41,7 +49,6 @@ Player::Player()
 	maxTimer = 20;
 	maxAnimationTimer = 70;
 	lockForce = false;
-
 }
 
 Player::~Player()
@@ -104,101 +111,108 @@ void Player::Init()
 	textRect.top = -73;
 	textRect.right = 60;
 	textRect.bottom = 0;
+
+	Player::getInstance()->setBasketballQty(10);
 }
 
 void Player::Update()
 {
-	//Player movement update
-	if (GameInput::getInstance()->KeyboardKeyHold(DIK_LEFT))
+	if (Player::getInstance()->basketballQty >= 1)
 	{
-		animationRow = 1;
-		isMoving = true;
-		direction.x = -1;
-		direction.y = 0;
-		printf("LEFT\n");
-		animationDefault[0] = 1;
-
-	}
-	
-	else if (GameInput::getInstance()->KeyboardKeyHold(DIK_RIGHT))
-	{
-		animationRow = 0;
-		isMoving = true;
-		direction.x = 1;
-		direction.y = 0;
-		printf("RIGHT\n");
-		animationDefault[1] = 1;
-	}
-
-	else {
-		isMoving = false;
-	}
-
-	if (GameInput::getInstance()->KeyboardKeyHold(DIK_SPACE))
-	{
-		if (force < 6 && lockForce == false) {
-			if (forceTimer < maxTimer) {
-				forceTimer += 1;
-			}
-
-			if (forceTimer >= maxTimer)
-			{
-				force++;
-				forceTimer = 0;
-				if (force == 5)
-				{
-					lockForce = true;
-				}
-			}
-
-		}
-
-		else if (force > 0 && lockForce == true) {
-			if (forceTimer < maxTimer) {
-				forceTimer += 1;
-			}
-
-			if (forceTimer >= maxTimer)
-			{
-				force--;
-				forceTimer = 0;
-				if (force == 1)
-				{
-					lockForce = false;
-				}
-			}
-		}
-	}
-
-	else if (GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] == 2 )
-	{
-		animationDefault[2] = 1;
-		animationRow = 2;
-		direction.x = 0;
-		direction.y = 0;
-		isMoving = true;
-		if (forceTimer < maxAnimationTimer) {
-			forceTimer++;
-		}
-
-		if (forceTimer >= maxAnimationTimer)
+		//Player movement update
+		if (GameInput::getInstance()->KeyboardKeyHold(DIK_LEFT))
 		{
-			tempForce = force;
-			positionBasketball = position;
-			velocityBasketball = D3DXVECTOR2(directionBasketball.x * (force * 10.0f), directionBasketball.y * 40.0f);
-			force = 0;
-			lockForce = false;
-
-			Basketball* temp = Basketball::getBasketball(textureBasketball);
-			temp->init(positionBasketball, velocityBasketball);
-			basketballList.push_back(temp);
-
-			GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] = 0;
-			isMoving = false;
-			forceTimer = 0;
+			animationRow = 1;
+			isMoving = true;
+			direction.x = -1;
+			direction.y = 0;
+			printf("LEFT\n");
+			animationDefault[0] = 1;
 
 		}
 
+		else if (GameInput::getInstance()->KeyboardKeyHold(DIK_RIGHT))
+		{
+			animationRow = 0;
+			isMoving = true;
+			direction.x = 1;
+			direction.y = 0;
+			printf("RIGHT\n");
+			animationDefault[1] = 1;
+		}
+
+		else {
+			isMoving = false;
+		}
+
+
+		if (GameInput::getInstance()->KeyboardKeyHold(DIK_SPACE))
+		{
+			if (force < 6 && lockForce == false) {
+				if (forceTimer < maxTimer) {
+					forceTimer += 1;
+				}
+
+				if (forceTimer >= maxTimer)
+				{
+					force++;
+					forceTimer = 0;
+					if (force == 5)
+					{
+						lockForce = true;
+					}
+				}
+
+			}
+
+			else if (force > 0 && lockForce == true) {
+				if (forceTimer < maxTimer) {
+					forceTimer += 1;
+				}
+
+				if (forceTimer >= maxTimer)
+				{
+					force--;
+					forceTimer = 0;
+					if (force == 1)
+					{
+						lockForce = false;
+					}
+				}
+			}
+		}
+
+		else if (GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] == 2)
+		{
+			animationDefault[2] = 1;
+			animationRow = 2;
+			direction.x = 0;
+			direction.y = 0;
+			isMoving = true;
+			if (forceTimer < maxAnimationTimer) {
+				forceTimer++;
+			}
+
+			if (forceTimer >= maxAnimationTimer)
+			{
+				tempForce = force;
+				positionBasketball = position;
+				Player::getInstance()->setBasketballQty(Player::getInstance()->getBasketballQty() - 1);
+				velocityBasketball = D3DXVECTOR2(directionBasketball.x * (force * 10.0f), directionBasketball.y * 40.0f);
+				force = 0;
+				lockForce = false;
+
+				Basketball* temp = Basketball::getBasketball(textureBasketball);
+				temp->init(positionBasketball, velocityBasketball);
+				basketballList.push_back(temp);
+
+				GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] = 0;
+				isMoving = false;
+				forceTimer = 0;
+
+			}
+
+		}
 	}
 
 	if (position.x < 120) {
