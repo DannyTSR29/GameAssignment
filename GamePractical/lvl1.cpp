@@ -30,6 +30,7 @@ void lvl1::Update() {
 }
 
 void lvl1::FixedUpdate() {
+	dBackGround->FixedUpdate();
 	dPlayer->FixedUpdate();
 }
 

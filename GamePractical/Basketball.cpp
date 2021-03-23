@@ -51,9 +51,17 @@ void Basketball::releaseAllBasketball() {
 Basketball::Basketball() {
 	spriteRectBasketball.left = 0;
 	spriteRectBasketball.top = 0;
-	spriteRectBasketball.right = 32;
-	spriteRectBasketball.bottom = 32;
+	spriteRectBasketball.right = 25;
+	spriteRectBasketball.bottom = 25;
 	gravity = D3DXVECTOR2(0,3);
+	//spriteBasketball = NULL;
+	//textureBasketball = NULL;
+
+	//D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteBasketball);
+	//D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "basketball.png", D3DX_DEFAULT, D3DX_DEFAULT,
+	//	D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
+	//	D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(247, 247, 247),
+	//	NULL, NULL, &textureBasketball);
 }
 
 Basketball::~Basketball() {
@@ -68,9 +76,8 @@ void Basketball::release() {
 }
 
 void Basketball::init(D3DXVECTOR2 position, D3DXVECTOR2 velocityBasketball) {
-	this->position = position; 
+	Basketball::getInstance()->setPosition(position);
 	isUsing = true;
-	//tempVelocityBasketball = velocityBasketball;
 	Basketball::getInstance()->setVelocity(velocityBasketball);
 }
 
@@ -82,36 +89,33 @@ void Basketball::update() {
 	if (isUsing == false) {
 		return;
 	}
-	printf("%f\n", Basketball::getInstance()->getVelocity().x);
-	printf("%f\n", Basketball::getInstance()->getVelocity().y);
+	tempPosition = Basketball::getInstance()->getPosition();
 
-	//if ((tempVelocityBasketball.y * 30) / 2)
-	//{
-	//	tempVelocityBasketball += gravity / 5.0f;
-	//}
-	//position += tempVelocityBasketball / 5.0f;
-
+	//printf("%f\n", Basketball::getInstance()->getVelocity().x);
+	//printf("%f\n", Basketball::getInstance()->getVelocity().y);
 	if ((Basketball::getInstance()->getVelocity().y * 30) / 2)
 	{
 		Basketball::getInstance()->setVelocity(Basketball::getInstance()->getVelocity() += gravity / 5.0f);
 	}
-	position += Basketball::getInstance()->getVelocity() / 5.0f;
+	Basketball::getInstance()->setPosition(Basketball::getInstance()->getPosition() += Basketball::getInstance()->getVelocity() / 5.0f);
 
-	Basketball::getInstance()->setPosition(position);
-
-	if (position.y >= 580)
+	if (Basketball::getInstance()->getPosition().y >= 578)
 	{
 		isUsing = false;
 	}
 }
 
-void Basketball::draw(LPD3DXSPRITE sprite) {
+void Basketball::draw(LPD3DXSPRITE spriteBasketball) {
 	if (isUsing == false) {
 		return;
 	}
-	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &position);
-	sprite->SetTransform(&mat);
-	sprite->Draw(texture, NULL, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+
+	spriteBasketball->Begin(D3DXSPRITE_ALPHABLEND);
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &tempPosition);
+	spriteBasketball->SetTransform(&mat);
+	spriteBasketball->Draw(texture, NULL, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+	spriteBasketball->End();
+
 }
 
 void Basketball::setPosition(D3DXVECTOR2 position) {

@@ -83,7 +83,6 @@ void Player::Init()
 	// Build our matrix to rotate, scale and position our sprite
 	scaling = D3DXVECTOR2(0.5f, 0.5f);
 
-	positionBasketball = position;
 
 	//1443 / 8 = 178
 	//264 / 2 = 126.67
@@ -171,7 +170,7 @@ void Player::Update()
 		}
 	}
 
-	else if (GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] == 2)
+	else if (GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] == 2 )
 	{
 		animationDefault[2] = 1;
 		animationRow = 2;
@@ -185,9 +184,7 @@ void Player::Update()
 		if (forceTimer >= maxAnimationTimer)
 		{
 			tempForce = force;
-			//speedBasketball = (tempForce / animationDuration) * 60;
-			//velocityBasketball = directionBasketball * (speedBasketball / 60);
-
+			positionBasketball = position;
 			velocityBasketball = D3DXVECTOR2(directionBasketball.x * (force * 10.0f), directionBasketball.y * 40.0f);
 			force = 0;
 			lockForce = false;
@@ -199,7 +196,9 @@ void Player::Update()
 			GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] = 0;
 			isMoving = false;
 			forceTimer = 0;
+
 		}
+
 	}
 
 	if (position.x < 120) {
@@ -237,7 +236,15 @@ void Player::FixedUpdate()
 	
 	for (int i = 0; i < basketballList.size(); i++)
 	{
-		basketballList[i]->update();
+		if (basketballList[i]->isUsing)
+		{
+			basketballList[i]->update();
+		}
+
+		else
+		{
+			basketballList.erase(basketballList.begin() + i);
+		}
 	}
 
 }
@@ -298,16 +305,11 @@ void Player::Draw()
 
 	sprite->End();
 
-
-	spriteBasketball->Begin(D3DXSPRITE_ALPHABLEND);
 	for (int i = 0; i < basketballList.size(); i++)
 	{
 		basketballList[i]->draw(spriteBasketball);
 
 	}
-	spriteBasketball->End();
-
-
 }
 
 void Player::Release()
@@ -321,6 +323,8 @@ void Player::Release()
 	textureForce = NULL;
 	sprite->Release();
 	sprite = NULL;
+	spriteBasketball->Release();
+	spriteBasketball = NULL;
 	texture->Release();
 	texture = NULL;
 
