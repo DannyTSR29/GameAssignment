@@ -3,6 +3,7 @@
 #include "GameGraphic.h"
 #include "Basketball.h"
 #include "Player.h"
+#include<fmod.hpp>
 
 class Background
 {
@@ -16,6 +17,9 @@ private:
 	RECT spriteRect;
 	LPD3DXFONT font;
 	RECT textRect;
+	FMOD::System* system;               //Fmod system object
+	FMOD::Sound* bgmusic;
+	FMOD::Channel* bgChannel;
 
 
 	D3DXMATRIX mat;

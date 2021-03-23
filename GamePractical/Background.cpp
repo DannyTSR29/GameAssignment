@@ -1,4 +1,5 @@
 #include "Background.h"
+#include<fmod.hpp>
 #include <stdio.h>
 
 Background::Background() {
@@ -21,6 +22,23 @@ Background::~Background() {
 
 
 void Background::Init() {
+
+	FMOD::System_Create(&system);       //Create the Fmod object
+	
+	
+	
+	system->init(100, FMOD_INIT_NORMAL, 0); //Initialize Fmod system
+	system->createStream("Background_music.wav", FMOD_DEFAULT, 0, &bgmusic);
+	bgmusic->setMode(FMOD_LOOP_NORMAL);
+	FMOD_RESULT result = system->playSound(bgmusic, NULL, false, &bgChannel);
+	bgChannel->setPaused(true);
+	system->playSound(bgmusic, NULL, true, &bgChannel);
+	bgChannel->setPan(-0.8f);
+	bgChannel->setVolume(0.8f);
+	bgChannel->setPaused(false);
+
+
+
 	//Create Sprite Device
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteHoop);
@@ -99,10 +117,10 @@ void Background::Update() {
 			}
 		}
 	}*/
+	system->update();
 	
 }
-//885
-//1078
+
 void Background::Draw() {
 	sprite->Begin(D3DXSPRITE_ALPHABLEND);
 	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, NULL);
@@ -126,6 +144,10 @@ font->DrawText(sprite, hpStr.c_str(), -1, &textRect, DT_CENTER | DT_NOCLIP, D3DC
 }
 
 void Background::Release() {
+
+	bgmusic->release();
+
+	system->release();
 
 	font->Release();
 	font = NULL;
