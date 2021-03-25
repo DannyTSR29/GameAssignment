@@ -80,12 +80,12 @@ void Background::Init() {
 
 	spriteScoreFrontRect.left = 47;
 	spriteScoreFrontRect.top = 63;
-	spriteScoreFrontRect.right = 67;
+	spriteScoreFrontRect.right = 87;
 	spriteScoreFrontRect.bottom = 65;
 
 	spriteScoreBackRect.left = 100;
 	spriteScoreBackRect.top = 64;
-	spriteScoreBackRect.right = 120;
+	spriteScoreBackRect.right = 140;
 	spriteScoreBackRect.bottom = 66;
 
 	textRect.left = 0;
@@ -111,25 +111,25 @@ void Background::Update() {
 		score += 1;
 	}
 
-	else if (frontScore == 1 && run == true && backScore == 0 && run == false)
-	{
-		soundEffect->play();
-		soundEffect->volumeDown();
+	//if (frontScore == 1 && run == true && backScore == 0 && run == false)
+	//{
+	//	soundEffect->play();
+	//	soundEffect->volumeDown();
 
-		frontScore = 0;
-		backScore = 0;
-		score += 1;
-	}
+	//	frontScore = 0;
+	//	backScore = 0;
+	//	score += 1;
+	//}
 
-	else if (frontScore == 0 && run == false && backScore == 1 && run == true)
-	{
-		soundEffect->play();
-		soundEffect->volumeDown();
+	//if (frontScore == 0 && run == false && backScore == 1 && run == true)
+	//{
+	//	soundEffect->play();
+	//	soundEffect->volumeDown();
 
-		frontScore = 0;
-		backScore = 0;
-		score += 1;
-	}
+	//	frontScore = 0;
+	//	backScore = 0;
+	//	score += 1;
+	//}
 
 	if (score >= 2)
 	{
@@ -367,8 +367,8 @@ bool Background::checkCollisionScoreBack(D3DXVECTOR2 positionBasketball, RECT re
 	rectBasketball.bottom = positionBasketball.y + rectBasketball.bottom - rectBasketball.top;
 	rectBasketball.top = positionBasketball.y;
 
-	rectScore.right = positionScore.x + 30 + rectScore.right - rectScore.left;
-	rectScore.left = positionScore.x + 30;
+	rectScore.right = positionScore.x + 10 + rectScore.right - rectScore.left;
+	rectScore.left = positionScore.x + 10;
 	rectScore.bottom = positionScore.y + 105 + rectScore.bottom - rectScore.top;
 	rectScore.top = positionScore.y + 105;
 
