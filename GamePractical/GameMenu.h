@@ -3,6 +3,7 @@
 #include "GameInput.h"
 #include "GameGraphic.h"
 #include "GameWin.h"
+#include "Sound.h"
 class GameMenu : public GameState
 {
 private:
@@ -14,6 +15,7 @@ private:
 
 	RECT spriteRect;
 	RECT textRect;
+	Sound* sound;
 
 	//D3DXMATRIX mat;
 	//D3DXVECTOR2 spriteCentre;

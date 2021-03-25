@@ -36,9 +36,14 @@ GameMenu::~GameMenu() {
 }
 
 void GameMenu::Init() {
+	sound->Init();
+	sound = new Sound("Menu_bgm.wav", false);
 }
 
 void GameMenu::Update() {
+	sound->play();
+	sound->volumeDown();
+	sound->Update();
 	if (GameInput::getInstance()->KeyboardKeyPressed(DIK_SPACE))
 	{
 		GameStateManager::getInstance()->changeGameState(1);
@@ -65,6 +70,9 @@ void GameMenu::Draw() {
 }
 
 void GameMenu::Release() {
+
+	sound->Release();
+	sound = NULL;
 
 	font->Release();
 	font = NULL;
