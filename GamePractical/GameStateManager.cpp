@@ -20,6 +20,7 @@ void GameStateManager::releaseInstance() {
 		instance = NULL;
 	}
 }
+
 GameStateManager::GameStateManager() {
 	GameMenu* dMenu = new GameMenu;
 	dMenu->Init();

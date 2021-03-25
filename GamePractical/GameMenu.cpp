@@ -4,7 +4,13 @@
 GameMenu::GameMenu() {
 	sprite = NULL;
 	texture = NULL;
+	soundPlay = true;
+}
 
+GameMenu::~GameMenu() {
+}
+
+void GameMenu::Init() {
 	//Create Sprite Device
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
 
@@ -20,6 +26,9 @@ GameMenu::GameMenu() {
 		DEFAULT_CHARSET, OUT_TT_ONLY_PRECIS, DEFAULT_QUALITY,
 		DEFAULT_PITCH | FF_DONTCARE, "Arial", &font);
 
+	sound->Init();
+	sound = new Sound("Menu_bgm.wav", true);
+
 	spriteRect.left = 0;
 	spriteRect.top = 0;
 	spriteRect.right = 1252;
@@ -30,24 +39,31 @@ GameMenu::GameMenu() {
 	textRect.top = 250;
 	textRect.right = 0;
 	textRect.bottom = 0;
-}
 
-GameMenu::~GameMenu() {
-}
 
-void GameMenu::Init() {
-	sound->Init();
-	sound = new Sound("Menu_bgm.wav", false);
+	sound->play();
+	sound->volumeDown();
+
 }
 
 void GameMenu::Update() {
-	sound->play();
-	sound->volumeDown();
-	sound->Update();
 	if (GameInput::getInstance()->KeyboardKeyPressed(DIK_SPACE))
 	{
+		soundPlay = false;
 		GameStateManager::getInstance()->changeGameState(1);
 	}
+
+	if (soundPlay == true)
+	{
+		sound->Update();
+	}
+
+	else
+	{
+		sound->stop();
+
+	}
+
 }
 
 void GameMenu::FixedUpdate() {
@@ -70,7 +86,6 @@ void GameMenu::Draw() {
 }
 
 void GameMenu::Release() {
-
 	sound->Release();
 	sound = NULL;
 

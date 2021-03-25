@@ -1,5 +1,6 @@
 #include "Sound.h"
-#include"GameWin.h"
+#include "fmod.hpp"
+
 FMOD_SYSTEM* Sound::g_sound_system;
 
 Sound::Sound(const char* path, bool loop) {
@@ -26,13 +27,16 @@ int Sound::Init() {
     return 0;
 }
 
-int Sound::Release() {
-    FMOD_System_Close(g_sound_system);
-    FMOD_System_Release(g_sound_system);
+
+int Sound::Update() {
+    FMOD_Channel_IsPlaying(m_channel, &m_bool);
+
+    if (m_bool) {
+        FMOD_System_Update(g_sound_system);
+    }
 
     return 0;
 }
-
 
 int Sound::play() {
     FMOD_System_PlaySound(g_sound_system, m_sound, NULL, false, &m_channel);
@@ -79,13 +83,11 @@ int Sound::volumeDown() {
 }
 
 
-int Sound::Update() {
-    FMOD_Channel_IsPlaying(m_channel, &m_bool);
 
-    if (m_bool) {
-        FMOD_System_Update(g_sound_system);
-    }
+int Sound::Release() {
+    FMOD_System_Close(g_sound_system);
+    FMOD_System_Release(g_sound_system);
+    
 
     return 0;
 }
-

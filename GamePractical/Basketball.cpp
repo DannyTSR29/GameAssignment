@@ -95,11 +95,11 @@ void Basketball::update() {
 	//printf("%f\n", Basketball::getInstance()->getVelocity().y);
 	if ((Basketball::getInstance()->getVelocity().y * 30) / 2)
 	{
-		Basketball::getInstance()->setVelocity(Basketball::getInstance()->getVelocity() += gravity / 5.0f);
+		Basketball::getInstance()->setVelocity(Basketball::getInstance()->getVelocity() += gravity / 2.5f);
 	}
-	Basketball::getInstance()->setPosition(Basketball::getInstance()->getPosition() += Basketball::getInstance()->getVelocity() / 5.0f);
+	Basketball::getInstance()->setPosition(Basketball::getInstance()->getPosition() += Basketball::getInstance()->getVelocity() / 2.5f);
 
-	if (Basketball::getInstance()->getPosition().y >= 578)
+	if (Basketball::getInstance()->getPosition().y >= 450)
 	{
 		isUsing = false;
 	}

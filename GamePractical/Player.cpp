@@ -112,7 +112,7 @@ void Player::Init()
 	textRect.right = 60;
 	textRect.bottom = 0;
 
-	Player::getInstance()->setBasketballQty(10);
+	Player::getInstance()->setBasketballQty(15);
 }
 
 void Player::Update()
@@ -330,15 +330,21 @@ void Player::Release()
 {
 	font->Release();
 	font = NULL;
+
 	Basketball::releaseAllBasketball();
+
 	textureBasketball->Release();
 	textureBasketball = NULL;
+
 	textureForce->Release();
 	textureForce = NULL;
+
 	sprite->Release();
 	sprite = NULL;
+
 	spriteBasketball->Release();
 	spriteBasketball = NULL;
+
 	texture->Release();
 	texture = NULL;
 

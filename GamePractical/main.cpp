@@ -5,8 +5,6 @@
 #include "GameInput.h"
 #include "GameState.h"
 #include "GameStateManager.h"
-#include "lvl1.h"
-#include "lvl2.h"
 //--------------------------------------------------------------------
 
 //b2Vec2 getTrajectoryPoint(b2Vec2& startingPosition, b2Vec2& startingVelocity, float n)
@@ -55,7 +53,6 @@ int main()
 	dGraphic->releaseInstance();
 	dInput->releaseInstance();
 	dWin->releaseInstance();
-
 	return 0;
 }
 //--------------------------------------------------------------------

@@ -14,21 +14,14 @@ private:
     LPD3DXSPRITE sprite;
     LPD3DXSPRITE spriteHoop;
     LPD3DXLINE line;
-    LPD3DXLINE lineBoard;
-
-  
 
     LPD3DXFONT font;
     RECT spriteRect;
     RECT textRect;
-
     RECT spriteHoopRect;
-
     RECT spriteBoardRect;
-
     RECT spriteBoardFrontRect;
     RECT spriteBoardBackRect;
-
     RECT spriteScoreFrontRect;
     RECT spriteScoreBackRect;
 
@@ -38,6 +31,7 @@ private:
     D3DXVECTOR2 trans;
     D3DXVECTOR2 tran1;
     D3DXVECTOR2 position;
+    D3DXVECTOR2 velocity;
     D3DXVECTOR2 scaling;
     D3DXVECTOR2 direction;
     D3DXVECTOR2 directionmove;
@@ -48,13 +42,14 @@ private:
     D3DXVECTOR2 scoreVerticesFront[5];
     D3DXVECTOR2 scoreVerticesBack[5];
 
+    Sound* sound;
+    Sound* soundEffect;
+
     bool lockMove;
-    bool isMoving;
     bool run;
     float rotation;
     float speed;
     float animationTimer;
-    Sound* sound;
 
     int score;
     int frontScore, backScore;

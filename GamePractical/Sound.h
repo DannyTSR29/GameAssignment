@@ -1,5 +1,6 @@
 #pragma once
 #include <fmod.h>
+#include"GameWin.h"
 
 #define SOUND_MAX 1.0f
 #define SOUND_MIN 0.0f
@@ -16,7 +17,9 @@ private:
 
     float m_volume;
     FMOD_BOOL m_bool;
+
 public:
+
     Sound(const char* path, bool loop);
     ~Sound();
 
@@ -24,12 +27,12 @@ public:
     static int Release();
 
     int play();
+    int Update();
     int pause();
     int resume();
     int stop();
     int volumeUp();
     int volumeDown();
 
-    int Update();
 };
 

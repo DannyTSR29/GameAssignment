@@ -17,11 +17,8 @@ private:
 	RECT textRect;
 	Sound* sound;
 
-	//D3DXMATRIX mat;
-	//D3DXVECTOR2 spriteCentre;
-	//D3DXVECTOR2 trans;
-	//D3DXVECTOR2 scaling;
-	//float rotation = 0;
+	bool soundPlay;
+
 
 public:
 	GameMenu();
@@ -32,5 +29,7 @@ public:
 	void FixedUpdate();
 	void Draw();
 	void Release();
+
+
 };
 

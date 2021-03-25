@@ -1,17 +1,18 @@
 #include "Background.h"
+#include "GameMenu.h"
 #include <stdio.h>
-bool run;
+
 Background::Background() {
 	sprite = NULL;
 	spriteHoop = NULL;
 	texture = NULL;
 	textureHoop = NULL;
 	line = NULL;
-	lineBoard = NULL;
 	position = D3DXVECTOR2(1100,200);
 	scaling = D3DXVECTOR2(1.5f, 1.5f);
+	trans = D3DXVECTOR2(665, 215);
+	tran1 = D3DXVECTOR2(582, 215);
 	speed = (1.0f) * 30;
-	isMoving = true;
 	lockMove = false;
 	run = false;
 	score = 0;
@@ -24,15 +25,10 @@ Background::~Background() {
 }
 
 void Background::Init() {
-	
-	sound->Init();
-	sound = new Sound("Background_music.wav", false);
-
 	//Create Sprite Device
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteHoop);
 	D3DXCreateLine(GameGraphic::getInstance()->getDevice(), &line);
-	D3DXCreateLine(GameGraphic::getInstance()->getDevice(), &lineBoard);
 
 	//	Create texture. Study the documentation.
 	//D3DXCreateTextureFromFile(dGraphic->d3dDevice, "bg1.png", &texture);
@@ -51,6 +47,11 @@ void Background::Init() {
 		DEFAULT_CHARSET, OUT_TT_ONLY_PRECIS, DEFAULT_QUALITY,
 		DEFAULT_PITCH | FF_DONTCARE, "Arial", &font);
 
+	sound->Init();
+	sound = new Sound("Background_music.wav", true);
+
+	soundEffect->Init();
+	soundEffect = new Sound("Sound_Effect.wav", false);
 
 	spriteRect.left = 0;
 	spriteRect.top = 0;
@@ -92,20 +93,68 @@ void Background::Init() {
 	textRect.right = 0;
 	textRect.bottom = 0;
 
-	trans = D3DXVECTOR2(665, 215);
-	tran1 = D3DXVECTOR2(582, 215);
 }
 
 void Background::Update() {
-	
+
 	sound->play();
 	sound->volumeDown();
 	sound->Update();
-	//else if (tempTimer >= 60)
-	//{
-	//	tempTimer = 0;
-	//	timer += 1;
-	//}
+	
+	if (frontScore == 1 && run == false && backScore == 1 && run == false)
+	{
+		soundEffect->play();
+		soundEffect->volumeDown();
+
+		frontScore = 0;
+		backScore = 0;
+		score += 1;
+	}
+
+	else if (frontScore == 1 && run == true && backScore == 0 && run == false)
+	{
+		soundEffect->play();
+		soundEffect->volumeDown();
+
+		frontScore = 0;
+		backScore = 0;
+		score += 1;
+	}
+
+	else if (frontScore == 0 && run == false && backScore == 1 && run == true)
+	{
+		soundEffect->play();
+		soundEffect->volumeDown();
+
+		frontScore = 0;
+		backScore = 0;
+		score += 1;
+	}
+
+	if (score >= 2)
+	{
+		if (position.x <= 1100 && lockMove == false) {
+			direction = D3DXVECTOR2(-1, 0);
+			velocity = direction * (speed / 60.0f);
+			position += velocity;
+
+			if (position.x <= 885) {
+				lockMove = true;
+				velocity = D3DXVECTOR2(0, 0);
+			}
+		}
+		else if (position.x >= 883 && lockMove == true) {
+			direction = D3DXVECTOR2(1, 0);
+			velocity = direction * (speed / 60.0f);
+			position += velocity;
+			if (position.x >= 1100) {
+				lockMove = false;
+			}
+		}
+	}
+}
+
+void Background::FixedUpdate() {
 
 	if (checkCollisionBoard(Basketball::getInstance()->getPosition(), Basketball::getInstance()->spriteRectBasketball, position, spriteBoardRect))
 	{
@@ -127,55 +176,20 @@ void Background::Update() {
 
 	if (checkCollisionScoreFront(Basketball::getInstance()->getPosition(), Basketball::getInstance()->spriteRectBasketball, position, spriteScoreFrontRect))
 	{
-		frontScore = 1;
-		run = true;
 		D3DXVECTOR2 tempVelocity = D3DXVECTOR2(5.0f, 10.0f);
 		Basketball::getInstance()->setVelocity(tempVelocity);
+		frontScore = 1;
+		run = true;
 	}
 
 	if (checkCollisionScoreBack(Basketball::getInstance()->getPosition(), Basketball::getInstance()->spriteRectBasketball, position, spriteScoreBackRect))
 	{
-		backScore = 1;
-		run = true;
 		D3DXVECTOR2 tempVelocity = D3DXVECTOR2(-5.0f, 10.0f);
 		Basketball::getInstance()->setVelocity(tempVelocity);
+		backScore = 1;
+		run = true;
+
 	}
-
-	//D3DXVECTOR2 velocity;
-	//if (isMoving)
-	//{
-	//	if (position.x <= 1078 && lockMove==false) {
-	//		direction.x = -1;
-	//		direction.y = 0;
-	//		velocity = direction * (speed / 60.0f);
-	//		position += velocity;
-	//		if (position.x <= 885) {
-	//			lockMove = true;
-	//			velocity.x = 0;
-	//			velocity.y = 0;
-	//		}
-	//	}
-	//	else if (position.x >= 883 && lockMove==true) {
-	//		direction.x = 1;
-	//		direction.y = 0;
-	//		velocity = direction * (speed / 60.0f);
-	//		position += velocity;
-	//		if (position.x >= 1078) {
-	//			lockMove = false;
-	//		}
-	//	}
-	//}
-	
-}
-
-void Background::FixedUpdate() {
-	if (frontScore == 1 && run == false && backScore == 1 && run == false)
-	{
-		frontScore = 0;
-		backScore = 0;
-		score += 1;
-	}
-
 }
 
 void Background::Draw() {
@@ -236,8 +250,6 @@ void Background::Release() {
 	line->Release();
 	line = NULL;
 
-	lineBoard->Release();
-	lineBoard = NULL;
 }
 
 bool Background::checkCollisionBoard(D3DXVECTOR2 positionBasketball, RECT rectBasketball, D3DXVECTOR2 positionBoard, RECT rectBoard) {
@@ -341,12 +353,10 @@ bool Background::checkCollisionScoreFront(D3DXVECTOR2 positionBasketball, RECT r
 	scoreVerticesFront[3] = D3DXVECTOR2(rectScore.left, rectScore.bottom);
 	scoreVerticesFront[4] = D3DXVECTOR2(rectScore.left, rectScore.top);
 
-	run = false;
-
-	if (rectBasketball.bottom < rectScore.top) { return false; }
-	if (rectBasketball.top > rectScore.bottom) { return false; }
-	if (rectBasketball.right < rectScore.left) { return false; }
-	if (rectBasketball.left > rectScore.right) { return false; }
+	if (rectBasketball.bottom < rectScore.top) { run = false; return false; }
+	if (rectBasketball.top > rectScore.bottom) { run = false; return false; }
+	if (rectBasketball.right < rectScore.left) { run = false; return false; }
+	if (rectBasketball.left > rectScore.right) { run = false; return false; }
 
 	return true;
 }
@@ -368,12 +378,10 @@ bool Background::checkCollisionScoreBack(D3DXVECTOR2 positionBasketball, RECT re
 	scoreVerticesBack[3] = D3DXVECTOR2(rectScore.left, rectScore.bottom);
 	scoreVerticesBack[4] = D3DXVECTOR2(rectScore.left, rectScore.top);
 
-	run = false;
-
-	if (rectBasketball.bottom < rectScore.top) { return false; }
-	if (rectBasketball.top > rectScore.bottom) { return false; }
-	if (rectBasketball.right < rectScore.left) { return false; }
-	if (rectBasketball.left > rectScore.right) { return false; }
+	if (rectBasketball.bottom < rectScore.top) { run = false; return false; }
+	if (rectBasketball.top > rectScore.bottom) { run = false; return false; }
+	if (rectBasketball.right < rectScore.left) { run = false; return false; }
+	if (rectBasketball.left > rectScore.right) { run = false; return false; }
 
 	return true;
 }
