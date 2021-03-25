@@ -1,6 +1,6 @@
 #include "Background.h"
 #include <stdio.h>
-
+bool run;
 Background::Background() {
 	sprite = NULL;
 	spriteHoop = NULL;
@@ -13,6 +13,7 @@ Background::Background() {
 	speed = (1.0f) * 30;
 	isMoving = true;
 	lockMove = false;
+	run = false;
 	score = 0;
 	frontScore = 0;
 	backScore = 0;
@@ -21,7 +22,6 @@ Background::Background() {
 Background::~Background() {
 
 }
-
 
 void Background::Init() {
 	
@@ -101,6 +101,11 @@ void Background::Update() {
 	sound->play();
 	sound->volumeDown();
 	sound->Update();
+	//else if (tempTimer >= 60)
+	//{
+	//	tempTimer = 0;
+	//	timer += 1;
+	//}
 
 	if (checkCollisionBoard(Basketball::getInstance()->getPosition(), Basketball::getInstance()->spriteRectBasketball, position, spriteBoardRect))
 	{
@@ -123,6 +128,7 @@ void Background::Update() {
 	if (checkCollisionScoreFront(Basketball::getInstance()->getPosition(), Basketball::getInstance()->spriteRectBasketball, position, spriteScoreFrontRect))
 	{
 		frontScore = 1;
+		run = true;
 		D3DXVECTOR2 tempVelocity = D3DXVECTOR2(5.0f, 10.0f);
 		Basketball::getInstance()->setVelocity(tempVelocity);
 	}
@@ -130,6 +136,7 @@ void Background::Update() {
 	if (checkCollisionScoreBack(Basketball::getInstance()->getPosition(), Basketball::getInstance()->spriteRectBasketball, position, spriteScoreBackRect))
 	{
 		backScore = 1;
+		run = true;
 		D3DXVECTOR2 tempVelocity = D3DXVECTOR2(-5.0f, 10.0f);
 		Basketball::getInstance()->setVelocity(tempVelocity);
 	}
@@ -160,20 +167,13 @@ void Background::Update() {
 	//}
 	
 }
-int a = 0;
+
 void Background::FixedUpdate() {
-	if (frontScore == 1 && backScore == 1)
+	if (frontScore == 1 && run == false && backScore == 1 && run == false)
 	{
 		frontScore = 0;
-		backScore = 0;		
-		int i = 7;
-		a++;
-		printf("%d\n", a);
-		if (a >= 12)
-		{
-			score += 1;
-			a = 0;
-		}
+		backScore = 0;
+		score += 1;
 	}
 
 }
@@ -341,6 +341,8 @@ bool Background::checkCollisionScoreFront(D3DXVECTOR2 positionBasketball, RECT r
 	scoreVerticesFront[3] = D3DXVECTOR2(rectScore.left, rectScore.bottom);
 	scoreVerticesFront[4] = D3DXVECTOR2(rectScore.left, rectScore.top);
 
+	run = false;
+
 	if (rectBasketball.bottom < rectScore.top) { return false; }
 	if (rectBasketball.top > rectScore.bottom) { return false; }
 	if (rectBasketball.right < rectScore.left) { return false; }
@@ -365,6 +367,8 @@ bool Background::checkCollisionScoreBack(D3DXVECTOR2 positionBasketball, RECT re
 	scoreVerticesBack[2] = D3DXVECTOR2(rectScore.right, rectScore.bottom);
 	scoreVerticesBack[3] = D3DXVECTOR2(rectScore.left, rectScore.bottom);
 	scoreVerticesBack[4] = D3DXVECTOR2(rectScore.left, rectScore.top);
+
+	run = false;
 
 	if (rectBasketball.bottom < rectScore.top) { return false; }
 	if (rectBasketball.top > rectScore.bottom) { return false; }
