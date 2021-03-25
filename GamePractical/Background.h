@@ -50,8 +50,9 @@ private:
     D3DXVECTOR2 scoreVerticesBack[5];
 
     bool lockMove;
-    float rotation;
     bool isMoving;
+    bool run;
+    float rotation;
     float speed;
     float animationTimer;
 
@@ -67,7 +68,6 @@ public:
     void FixedUpdate();
     void Draw();
     void Release();
-
 
     bool checkCollisionBoard(D3DXVECTOR2 positionBasketball, RECT rectBasketball, D3DXVECTOR2 positionBoard, RECT rectBoard);
 
