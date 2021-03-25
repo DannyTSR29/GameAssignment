@@ -161,6 +161,7 @@
     <ClCompile Include="lvl2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="lvl1.h" />
     <ClInclude Include="lvl2.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Sound.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

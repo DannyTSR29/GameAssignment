@@ -3,7 +3,8 @@
 #include "GameGraphic.h"
 #include "Basketball.h"
 #include "Player.h"
-#include <fmod.hpp>
+#include "Sound.h"
+
 
 class Background
 {
@@ -15,9 +16,7 @@ private:
     LPD3DXLINE line;
     LPD3DXLINE lineBoard;
 
-    FMOD::System* system;               //Fmod system object
-    FMOD::Sound* bgmusic;
-    FMOD::Channel* bgChannel;
+  
 
     LPD3DXFONT font;
     RECT spriteRect;
@@ -54,6 +53,7 @@ private:
     bool isMoving;
     float speed;
     float animationTimer;
+    Sound* sound;
 
     int score;
     int frontScore, backScore;

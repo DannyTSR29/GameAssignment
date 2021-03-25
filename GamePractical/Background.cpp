@@ -24,16 +24,9 @@ Background::~Background() {
 
 
 void Background::Init() {
-	FMOD::System_Create(&system);       //Create the Fmod object
-	system->init(100, FMOD_INIT_NORMAL, 0); //Initialize Fmod system
-	system->createStream("Background_music.wav", FMOD_DEFAULT, 0, &bgmusic);
-	bgmusic->setMode(FMOD_LOOP_NORMAL);
-	FMOD_RESULT result = system->playSound(bgmusic, NULL, false, &bgChannel);
-	bgChannel->setPaused(true);
-	system->playSound(bgmusic, NULL, true, &bgChannel);
-	bgChannel->setPan(-0.8f);
-	bgChannel->setVolume(0.8f);
-	bgChannel->setPaused(false);
+	
+	sound->Init();
+	sound = new Sound("Background_music.wav", false);
 
 	//Create Sprite Device
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
@@ -104,8 +97,10 @@ void Background::Init() {
 }
 
 void Background::Update() {
-	system->update();
-
+	
+	sound->play();
+	sound->volumeDown();
+	sound->Update();
 
 	if (checkCollisionBoard(Basketball::getInstance()->getPosition(), Basketball::getInstance()->spriteRectBasketball, position, spriteBoardRect))
 	{
@@ -225,8 +220,9 @@ void Background::Draw() {
 }
 
 void Background::Release() {
-	bgmusic->release();
-	system->release();
+	
+	sound->Release();
+	sound = NULL;
 
 	font->Release();
 	font = NULL;
