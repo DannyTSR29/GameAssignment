@@ -2,6 +2,8 @@
 #include"GameInput.h"
 #include <stdio.h>
 
+bool deleteLine = true;
+
 Player* Player::instance = NULL;
 
 Player* Player::getInstance()
@@ -32,9 +34,12 @@ Player::Player()
 {
 	sprite = NULL;
 	spriteBasketball = NULL;
+	spriteTrajectory = NULL;
 	texture = NULL;
 	textureForce = NULL;
 	textureBasketball = NULL;
+	textureTrajectory = NULL;
+	line = NULL;
 	rotation = 0;
 	characterCurrentFrame = 0;
 	animationTimer = 0;
@@ -44,6 +49,7 @@ Player::Player()
 	isMoving = false;
 	direction = D3DXVECTOR2(0, 0);
 	directionBasketball = D3DXVECTOR2(1, -1);
+	gravity = D3DXVECTOR2(0,3);
 	force = 0;
 	forceTimer = 0;
 	maxTimer = 20;
@@ -59,6 +65,9 @@ void Player::Init()
 {
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteBasketball);
+	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteTrajectory);
+	D3DXCreateLine(GameGraphic::getInstance()->getDevice(), &line);
+
 	D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "char_move.png", D3DX_DEFAULT, D3DX_DEFAULT,
 		D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
 		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 0, 0),
@@ -73,6 +82,11 @@ void Player::Init()
 		D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
 		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(247, 247, 247),
 		NULL, NULL, &textureBasketball);
+
+	D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "trajectory.png", D3DX_DEFAULT, D3DX_DEFAULT,
+		D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
+		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 255, 255),
+		NULL, NULL, &textureTrajectory);
 
 	//	Create font. Study the documentation.
 	D3DXCreateFont(GameGraphic::getInstance()->getDevice(), 21, 0, 0, 1, false,
@@ -112,6 +126,11 @@ void Player::Init()
 	textRect.right = 60;
 	textRect.bottom = 0;
 
+	trajectory.left = 0;
+	trajectory.top = 0;
+	trajectory.right = 8;
+	trajectory.bottom = 8;
+
 	Player::getInstance()->setBasketballQty(15);
 }
 
@@ -145,9 +164,11 @@ void Player::Update()
 			isMoving = false;
 		}
 
-
+		
 		if (GameInput::getInstance()->KeyboardKeyHold(DIK_SPACE))
 		{
+			deleteLine = false;
+			tempPos = position;
 			if (force < 6 && lockForce == false) {
 				if (forceTimer < maxTimer) {
 					forceTimer += 1;
@@ -180,6 +201,16 @@ void Player::Update()
 					}
 				}
 			}
+
+
+			velocityBasketball = D3DXVECTOR2(directionBasketball.x * (force * 10.0f), directionBasketball.y * 40.0f);
+
+			for (int i = 0; i < 7; i++)
+			{
+				tempPos += velocityBasketball / 2.5f;
+				tempPos += gravity / 2.5f;
+				nextPosition[i] = tempPos;
+			}
 		}
 
 		else if (GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] == 2)
@@ -195,10 +226,8 @@ void Player::Update()
 
 			if (forceTimer >= maxAnimationTimer)
 			{
-				tempForce = force;
-				positionBasketball = position;
 				Player::getInstance()->setBasketballQty(Player::getInstance()->getBasketballQty() - 1);
-				velocityBasketball = D3DXVECTOR2(directionBasketball.x * (force * 10.0f), directionBasketball.y * 40.0f);
+				positionBasketball = position;
 				force = 0;
 				lockForce = false;
 
@@ -209,6 +238,7 @@ void Player::Update()
 				GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] = 0;
 				isMoving = false;
 				forceTimer = 0;
+				deleteLine = true;
 
 			}
 
@@ -319,19 +349,55 @@ void Player::Draw()
 
 	sprite->End();
 
+	if (!deleteLine)
+	{
+		spriteTrajectory->Begin(D3DXSPRITE_ALPHABLEND);
+		for (int i = 2; i < 7; i++)
+		{
+			D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, NULL, NULL, &nextPosition[i]);
+			spriteTrajectory->SetTransform(&mat);
+			spriteTrajectory->Draw(textureTrajectory, &trajectory, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+		}
+
+		spriteTrajectory->End();
+	}
+	
+	else
+	{
+
+	}
+
+
+	//line->Begin();
+	//
+	//line->Draw(nextPosition, 5, D3DCOLOR_XRGB(100, 255, 120));
+
+	//line->End();
+
+
 	for (int i = 0; i < basketballList.size(); i++)
 	{
 		basketballList[i]->draw(spriteBasketball);
-
 	}
 }
 
 void Player::Release()
 {
+	line->Release();
+	line = NULL;
+
 	font->Release();
 	font = NULL;
 
 	Basketball::releaseAllBasketball();
+	sprite->Release();
+	sprite = NULL;
+
+	spriteBasketball->Release();
+	spriteBasketball = NULL;
+
+	spriteTrajectory->Release();
+	spriteTrajectory = NULL;
 
 	textureBasketball->Release();
 	textureBasketball = NULL;
@@ -339,11 +405,8 @@ void Player::Release()
 	textureForce->Release();
 	textureForce = NULL;
 
-	sprite->Release();
-	sprite = NULL;
-
-	spriteBasketball->Release();
-	spriteBasketball = NULL;
+	//textureTrajectory->Release();
+	//textureTrajectory = NULL;
 
 	texture->Release();
 	texture = NULL;

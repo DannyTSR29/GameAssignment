@@ -10,23 +10,38 @@ private:
 	LPDIRECT3DTEXTURE9 texture;
 	LPDIRECT3DTEXTURE9 textureForce;
 	LPDIRECT3DTEXTURE9 textureBasketball;
+	LPDIRECT3DTEXTURE9 textureTrajectory;
 
 	LPD3DXSPRITE sprite;
 	LPD3DXSPRITE spriteBasketball;
+	LPD3DXSPRITE spriteTrajectory;
+
+	LPD3DXFONT font;
+	LPD3DXLINE line;
+
 	RECT spriteRect;
 	RECT spriteRectForce;
-	LPD3DXFONT font;
 	RECT textRect;
+	RECT trajectory;
+
 
 	D3DXMATRIX mat;
 	D3DXVECTOR2 spriteCentre;
 	D3DXVECTOR2 position;
-	D3DXVECTOR2 positionForceBar;
-	D3DXVECTOR2 scaling;
-	float rotation;
-
 	D3DXVECTOR2 direction;
 	D3DXVECTOR2 characterSize;
+	D3DXVECTOR2 positionBasketball;
+	D3DXVECTOR2 velocityBasketball;
+	D3DXVECTOR2 directionBasketball;
+	D3DXVECTOR2 nextPosition[15];
+	D3DXVECTOR2 tempPos;
+	D3DXVECTOR2 gravity;
+	D3DXVECTOR2 positionForceBar;
+	D3DXVECTOR2 scaling;
+
+	float rotation;
+
+
 	int characterCurrentFrame;
 	int animationRow;
 	float animationDuration;
@@ -45,6 +60,7 @@ private:
 	int tempForce;
 
 	vector <Basketball*> basketballList;
+
 	static Player* instance;
 
 public:
@@ -57,10 +73,6 @@ public:
 	void AnimationDefault();
 	void Draw();
 	void Release();
-
-	D3DXVECTOR2 positionBasketball;
-	D3DXVECTOR2 velocityBasketball;
-	D3DXVECTOR2 directionBasketball;
 
 	static Player* getInstance();
 	static void releaseInstance();
