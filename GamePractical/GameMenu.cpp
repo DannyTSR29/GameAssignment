@@ -6,7 +6,7 @@ GameMenu::GameMenu() {
 	texture = NULL;
 
 	sound->Init();
-	sound = new Sound("Menu_bgm.wav", true);
+	sound = new Sound("menuBgm.wav", true);
 
 }
 
