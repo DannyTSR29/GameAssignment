@@ -18,9 +18,6 @@
     <ClCompile Include="lvl1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lvl2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameGraphic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,12 +51,15 @@
     <ClCompile Include="Sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WinScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoseScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvl1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="lvl2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameGraphic.h">
@@ -93,6 +93,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WinScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoseScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

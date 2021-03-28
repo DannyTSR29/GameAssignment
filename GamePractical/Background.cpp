@@ -8,16 +8,12 @@ Background::Background() {
 	texture = NULL;
 	textureHoop = NULL;
 	line = NULL;
-	position = D3DXVECTOR2(1100,200);
-	scaling = D3DXVECTOR2(1.5f, 1.5f);
-	trans = D3DXVECTOR2(665, 215);
-	tran1 = D3DXVECTOR2(582, 215);
-	speed = (1.0f) * 30;
-	lockMove = false;
-	run = false;
-	score = 0;
-	frontScore = 0;
-	backScore = 0;
+	sound->Init();
+	sound = new Sound("bgm.wav", true);
+
+	soundEffect->Init();
+	soundEffect = new Sound("soundEffect.wav", false);
+
 }
 
 Background::~Background() {
@@ -25,7 +21,19 @@ Background::~Background() {
 }
 
 void Background::Init() {
-	//Create Sprite Device
+	position = D3DXVECTOR2(1100, 200);
+	scaling = D3DXVECTOR2(1.5f, 1.5f);
+	trans = D3DXVECTOR2(665, 215);
+	tran1 = D3DXVECTOR2(582, 215);
+	speed = (1.0f) * 30;
+	lockMove = false;
+	run = false;
+	soundPlay = true;
+	score = 0;
+	frontScore = 0;
+	backScore = 0;
+
+
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteHoop);
 	D3DXCreateLine(GameGraphic::getInstance()->getDevice(), &line);
@@ -46,12 +54,6 @@ void Background::Init() {
 	D3DXCreateFont(GameGraphic::getInstance()->getDevice(), 50, 0, 0, 1, false,
 		DEFAULT_CHARSET, OUT_TT_ONLY_PRECIS, DEFAULT_QUALITY,
 		DEFAULT_PITCH | FF_DONTCARE, "Arial", &font);
-
-	sound->Init();
-	sound = new Sound("Background_music.wav", true);
-
-	soundEffect->Init();
-	soundEffect = new Sound("Sound_Effect.wav", false);
 
 	spriteRect.left = 0;
 	spriteRect.top = 0;
@@ -93,14 +95,35 @@ void Background::Init() {
 	textRect.right = 0;
 	textRect.bottom = 0;
 
+	sound->play();
+
 }
 
 void Background::Update() {
+	if (soundPlay)
+	{
+		sound->volumeDown();
+		sound->Update();
+	}
 
-	sound->play();
-	sound->volumeDown();
-	sound->Update();
-	
+	if (Player::getInstance()->getBasketballQty() == 0 && GameInput::getInstance()->KeyboardKeyPressed(DIK_RETURN))
+	{
+		if (score >= 5)
+		{
+			sound->stop();
+			soundPlay = false;
+			GameStateManager::getInstance()->changeGameState(2);
+		}
+
+		else if (score < 5)
+		{
+			sound->stop();
+			soundPlay = false;
+			GameStateManager::getInstance()->changeGameState(3);
+		}
+		
+	}
+
 	if (frontScore == 1 && run == false && backScore == 1 && run == false)
 	{
 		soundEffect->play();
@@ -111,25 +134,6 @@ void Background::Update() {
 		score += 1;
 	}
 
-	//if (frontScore == 1 && run == true && backScore == 0 && run == false)
-	//{
-	//	soundEffect->play();
-	//	soundEffect->volumeDown();
-
-	//	frontScore = 0;
-	//	backScore = 0;
-	//	score += 1;
-	//}
-
-	//if (frontScore == 0 && run == false && backScore == 1 && run == true)
-	//{
-	//	soundEffect->play();
-	//	soundEffect->volumeDown();
-
-	//	frontScore = 0;
-	//	backScore = 0;
-	//	score += 1;
-	//}
 
 	if (score >= 2)
 	{
@@ -152,6 +156,10 @@ void Background::Update() {
 			}
 		}
 	}
+
+
+
+	
 }
 
 void Background::FixedUpdate() {
@@ -237,6 +245,9 @@ void Background::Release() {
 	
 	sound->Release();
 	sound = NULL;
+
+	soundEffect->Release();
+	soundEffect = NULL;
 
 	font->Release();
 	font = NULL;

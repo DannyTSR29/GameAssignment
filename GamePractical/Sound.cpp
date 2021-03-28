@@ -1,9 +1,10 @@
 #include "Sound.h"
-#include "fmod.hpp"
+#include <stdio.h>
 
 FMOD_SYSTEM* Sound::g_sound_system;
 
-Sound::Sound(const char* path, bool loop) {
+Sound::Sound(const char* path, bool loop)
+{
     if (loop) {
         FMOD_System_CreateSound(g_sound_system, path, FMOD_LOOP_NORMAL, 0, &m_sound);
     }
@@ -15,54 +16,56 @@ Sound::Sound(const char* path, bool loop) {
     m_volume = SOUND_DEFAULT;
 }
 
-Sound::~Sound() {
+Sound::~Sound()
+{
     FMOD_Sound_Release(m_sound);
 }
 
-
-int Sound::Init() {
+int Sound::Init()
+{
     FMOD_System_Create(&g_sound_system);
     FMOD_System_Init(g_sound_system, 32, FMOD_INIT_NORMAL, NULL);
 
     return 0;
 }
 
-
-int Sound::Update() {
-    FMOD_Channel_IsPlaying(m_channel, &m_bool);
-
-    if (m_bool) {
-        FMOD_System_Update(g_sound_system);
-    }
+int Sound::Release()
+{
+    FMOD_System_Close(g_sound_system);
+    FMOD_System_Release(g_sound_system);
 
     return 0;
 }
 
-int Sound::play() {
+int Sound::play()
+{
     FMOD_System_PlaySound(g_sound_system, m_sound, NULL, false, &m_channel);
 
     return 0;
 }
 
-int Sound::pause() {
+int Sound::pause()
+{
     FMOD_Channel_SetPaused(m_channel, true);
 
     return 0;
 }
 
-int Sound::resume() {
+int Sound::resume()
+{
     FMOD_Channel_SetPaused(m_channel, false);
 
     return 0;
 }
 
-int Sound::stop() {
+int Sound::stop()
+{
     FMOD_Channel_Stop(m_channel);
-
     return 0;
 }
 
-int Sound::volumeUp() {
+int Sound::volumeUp()
+{
     if (m_volume < SOUND_MAX) {
         m_volume += SOUND_WEIGHT;
     }
@@ -72,7 +75,8 @@ int Sound::volumeUp() {
     return 0;
 }
 
-int Sound::volumeDown() {
+int Sound::volumeDown()
+{
     if (m_volume > SOUND_MIN) {
         m_volume -= SOUND_WEIGHT;
     }
@@ -82,12 +86,13 @@ int Sound::volumeDown() {
     return 0;
 }
 
+int Sound::Update()
+{
+    FMOD_Channel_IsPlaying(m_channel, &m_bool);
 
-
-int Sound::Release() {
-    FMOD_System_Close(g_sound_system);
-    FMOD_System_Release(g_sound_system);
-    
+    if (m_bool) {
+        FMOD_System_Update(g_sound_system);
+    }
 
     return 0;
 }

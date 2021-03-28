@@ -1,7 +1,8 @@
 #include "GameStateManager.h"
 #include "GameMenu.h"
 #include "lvl1.h"
-#include "lvl2.h"
+#include "WinScene.h"
+#include "LoseScene.h"
 
 GameStateManager* GameStateManager::instance = NULL;
 
@@ -26,14 +27,15 @@ GameStateManager::GameStateManager() {
 	dMenu->Init();
 
 	lvl1* dlvl1 = new lvl1;
-	dlvl1->Init();
 
-	lvl2* dlvl2 = new lvl2;
-	dlvl2->Init();
+	WinScene* dWin = new WinScene;
+
+	LoseScene* dLose = new LoseScene;
 
 	gameStateList.push_back(dMenu);
 	gameStateList.push_back(dlvl1);
-	gameStateList.push_back(dlvl2);
+	gameStateList.push_back(dWin);
+	gameStateList.push_back(dLose);
 
 	currentGameState = dMenu;
 
@@ -68,4 +70,5 @@ void GameStateManager::draw() {
 
 void GameStateManager::changeGameState(int index) {
 	currentGameState = gameStateList[index];
+	currentGameState->Init();
 }

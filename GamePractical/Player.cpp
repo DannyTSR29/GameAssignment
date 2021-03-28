@@ -40,21 +40,8 @@ Player::Player()
 	textureBasketball = NULL;
 	textureTrajectory = NULL;
 	line = NULL;
-	rotation = 0;
-	characterCurrentFrame = 0;
-	animationTimer = 0;
-	animationDuration = 1.0f / 8;
-	speed = (1.0f / animationDuration) * 30;
-	animationRow = 0;
-	isMoving = false;
-	direction = D3DXVECTOR2(0, 0);
-	directionBasketball = D3DXVECTOR2(1, -1);
-	gravity = D3DXVECTOR2(0,3);
-	force = 0;
-	forceTimer = 0;
-	maxTimer = 20;
-	maxAnimationTimer = 70;
-	lockForce = false;
+
+	
 }
 
 Player::~Player()
@@ -63,6 +50,33 @@ Player::~Player()
 
 void Player::Init()
 {
+	animationRow = 0;
+	characterCurrentFrame = 0;
+	animationTimer = 0;
+	force = 0;
+	forceTimer = 0;
+	maxTimer = 20;
+	maxAnimationTimer = 70;
+
+	animationDuration = 1.0f / 8;
+	speed = (1.0f / animationDuration) * 30;
+
+	isMoving = false;
+	lockForce = false;
+
+	direction = D3DXVECTOR2(0, 0);
+	directionBasketball = D3DXVECTOR2(1, -1);
+	gravity = D3DXVECTOR2(0, 3);
+	spriteCentre = D3DXVECTOR2(0, 0);
+	position = D3DXVECTOR2(350, 458);
+	scaling = D3DXVECTOR2(0.5f, 0.5f);
+
+	characterSize.x = 178;
+	characterSize.y = 132;
+
+	Player::getInstance()->setBasketballQty(15);
+
+
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteBasketball);
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteTrajectory);
@@ -93,24 +107,6 @@ void Player::Init()
 		DEFAULT_CHARSET, OUT_TT_ONLY_PRECIS, DEFAULT_QUALITY,
 		DEFAULT_PITCH | FF_DONTCARE, "Arial", &font);
 
-
-	// Texture being used is 64 by 64:
-	spriteCentre = D3DXVECTOR2(0, 0);
-	// Screen position of the sprite
-	position = D3DXVECTOR2(350, 458);
-	positionForceBar = D3DXVECTOR2(250, 558);
-	// Rotate based on the time passed
-	rotation += 0;
-	// Build our matrix to rotate, scale and position our sprite
-	scaling = D3DXVECTOR2(0.5f, 0.5f);
-
-
-	//1443 / 8 = 178
-	//264 / 2 = 126.67
-	characterSize.x = 178;
-	characterSize.y = 132;
-
-	//Player init
 	spriteRect.left = 0;
 	spriteRect.top = 0;
 	spriteRect.right = spriteRect.left + characterSize.x;
@@ -131,7 +127,6 @@ void Player::Init()
 	trajectory.right = 8;
 	trajectory.bottom = 8;
 
-	Player::getInstance()->setBasketballQty(15);
 }
 
 void Player::Update()
@@ -145,7 +140,6 @@ void Player::Update()
 			isMoving = true;
 			direction.x = -1;
 			direction.y = 0;
-			printf("LEFT\n");
 			animationDefault[0] = 1;
 
 		}
@@ -156,7 +150,6 @@ void Player::Update()
 			isMoving = true;
 			direction.x = 1;
 			direction.y = 0;
-			printf("RIGHT\n");
 			animationDefault[1] = 1;
 		}
 
@@ -226,13 +219,13 @@ void Player::Update()
 
 			if (forceTimer >= maxAnimationTimer)
 			{
+				basketballPosition = position;
 				Player::getInstance()->setBasketballQty(Player::getInstance()->getBasketballQty() - 1);
-				positionBasketball = position;
 				force = 0;
 				lockForce = false;
 
 				Basketball* temp = Basketball::getBasketball(textureBasketball);
-				temp->init(positionBasketball, velocityBasketball);
+				temp->init(basketballPosition, velocityBasketball);
 				basketballList.push_back(temp);
 
 				GameInput::getInstance()->previousKeyStateSpace[DIK_SPACE] = 0;

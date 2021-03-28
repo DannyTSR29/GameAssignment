@@ -24,40 +24,37 @@ private:
 	RECT textRect;
 	RECT trajectory;
 
-
 	D3DXMATRIX mat;
 	D3DXVECTOR2 spriteCentre;
 	D3DXVECTOR2 position;
+	D3DXVECTOR2 basketballPosition;
 	D3DXVECTOR2 direction;
 	D3DXVECTOR2 characterSize;
-	D3DXVECTOR2 positionBasketball;
 	D3DXVECTOR2 velocityBasketball;
 	D3DXVECTOR2 directionBasketball;
 	D3DXVECTOR2 nextPosition[15];
 	D3DXVECTOR2 tempPos;
 	D3DXVECTOR2 gravity;
-	D3DXVECTOR2 positionForceBar;
 	D3DXVECTOR2 scaling;
-
-	float rotation;
 
 
 	int characterCurrentFrame;
 	int animationRow;
-	float animationDuration;
-	float animationTimer;
-	float speed;
-	float speedBasketball;
-	bool isMoving;
-
 	int basketballQty;
 	int force;
 	int forceTimer;
 	int maxTimer;
 	int maxAnimationTimer;
 	int animationDefault[3];
-	bool lockForce;
 	int tempForce;
+
+	float animationDuration;
+	float animationTimer;
+	float speed;
+	float speedBasketball;
+
+	bool lockForce;
+	bool isMoving;
 
 	vector <Basketball*> basketballList;
 

@@ -19,6 +19,7 @@ void Basketball::releaseInstance() {
 }
 
 vector<Basketball*>Basketball::poolList;
+
 Basketball* Basketball::getBasketball(LPDIRECT3DTEXTURE9 texture) {
 	Basketball* basketball = NULL;
 	for (int i = 0; i < poolList.size(); i++)
@@ -54,14 +55,7 @@ Basketball::Basketball() {
 	spriteRectBasketball.right = 25;
 	spriteRectBasketball.bottom = 25;
 	gravity = D3DXVECTOR2(0,3);
-	//spriteBasketball = NULL;
-	//textureBasketball = NULL;
 
-	//D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &spriteBasketball);
-	//D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "basketball.png", D3DX_DEFAULT, D3DX_DEFAULT,
-	//	D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
-	//	D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(247, 247, 247),
-	//	NULL, NULL, &textureBasketball);
 }
 
 Basketball::~Basketball() {
@@ -95,9 +89,9 @@ void Basketball::update() {
 	//printf("%f\n", Basketball::getInstance()->getVelocity().y);
 	if ((Basketball::getInstance()->getVelocity().y * 30) / 2)
 	{
-		Basketball::getInstance()->setVelocity(Basketball::getInstance()->getVelocity() += gravity / 2.5f);
+		Basketball::getInstance()->setVelocity(Basketball::getInstance()->getVelocity() += gravity / 3.5f);
 	}
-	Basketball::getInstance()->setPosition(Basketball::getInstance()->getPosition() += Basketball::getInstance()->getVelocity() / 2.5f);
+	Basketball::getInstance()->setPosition(Basketball::getInstance()->getPosition() += Basketball::getInstance()->getVelocity() / 3.5f);
 
 	if (Basketball::getInstance()->getPosition().y >= 450)
 	{

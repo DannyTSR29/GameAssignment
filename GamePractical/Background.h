@@ -1,5 +1,6 @@
 #pragma once
 #include "GameWin.h"
+#include "GameStateManager.h"
 #include "GameGraphic.h"
 #include "Basketball.h"
 #include "Player.h"
@@ -34,7 +35,6 @@ private:
     D3DXVECTOR2 velocity;
     D3DXVECTOR2 scaling;
     D3DXVECTOR2 direction;
-    D3DXVECTOR2 directionmove;
     D3DXVECTOR2 basketballVertices[5];
     D3DXVECTOR2 boardVertices[5];
     D3DXVECTOR2 sBoardVerticesFront[5];
@@ -47,6 +47,7 @@ private:
 
     bool lockMove;
     bool run;
+    bool soundPlay;
     float rotation;
     float speed;
     float animationTimer;
