@@ -52,6 +52,7 @@ private:
     float speed;
     float animationTimer;
 
+    int timer;
     int score;
     int frontScore, backScore;
 

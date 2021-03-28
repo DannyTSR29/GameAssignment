@@ -74,7 +74,7 @@ void Player::Init()
 	characterSize.x = 178;
 	characterSize.y = 132;
 
-	Player::getInstance()->setBasketballQty(15);
+	Player::getInstance()->setBasketballQty(1);
 
 
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);

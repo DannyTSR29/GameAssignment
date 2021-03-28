@@ -51,6 +51,7 @@ void LoseScene::Update() {
 		soundPlay = false;
 		GameStateManager::getInstance()->changeGameState(1);
 	}
+
 }
 
 void LoseScene::FixedUpdate() {

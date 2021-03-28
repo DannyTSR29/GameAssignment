@@ -32,6 +32,7 @@ void Background::Init() {
 	score = 0;
 	frontScore = 0;
 	backScore = 0;
+	timer = 0;
 
 
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
@@ -106,22 +107,38 @@ void Background::Update() {
 		sound->Update();
 	}
 
-	if (Player::getInstance()->getBasketballQty() == 0 && GameInput::getInstance()->KeyboardKeyPressed(DIK_RETURN))
+	if (Player::getInstance()->getBasketballQty() == 0 && score >= 5)
 	{
-		if (score >= 5)
+		int maxTimer = 200;
+		if (timer <= maxTimer)
 		{
+			timer++;
+		}
+
+		else
+		{
+			timer = 0;
 			sound->stop();
 			soundPlay = false;
 			GameStateManager::getInstance()->changeGameState(2);
 		}
+	}
 
-		else if (score < 5)
+	else if (Player::getInstance()->getBasketballQty() == 0 && score < 5)
+	{
+		int maxTimer = 200;
+		if (timer <= maxTimer)
 		{
+			timer++;
+		}
+
+		else
+		{
+			timer = 0;
 			sound->stop();
 			soundPlay = false;
 			GameStateManager::getInstance()->changeGameState(3);
 		}
-		
 	}
 
 	if (frontScore == 1 && run == false && backScore == 1 && run == false)
