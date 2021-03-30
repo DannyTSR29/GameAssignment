@@ -49,7 +49,7 @@ void GameMenu::Update() {
 		sound->Update();
 	}
 
-	if (GameInput::getInstance()->KeyboardKeyPressed(DIK_SPACE))
+	if (GameInput::getInstance()->KeyboardKeyPressed(DIK_RETURN))
 	{
 		soundPlay = false;
 		sound->stop();

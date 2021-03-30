@@ -120,7 +120,7 @@ void Background::Update() {
 			timer = 0;
 			sound->stop();
 			soundPlay = false;
-			GameStateManager::getInstance()->changeGameState(2);
+			GameStateManager::getInstance()->changeGameState(4);
 		}
 	}
 
@@ -137,14 +137,13 @@ void Background::Update() {
 			timer = 0;
 			sound->stop();
 			soundPlay = false;
-			GameStateManager::getInstance()->changeGameState(3);
+			GameStateManager::getInstance()->changeGameState(5);
 		}
 	}
 
 	if (frontScore == 1 && run == false && backScore == 1 && run == false)
 	{
 		soundEffect->play();
-		soundEffect->volumeDown();
 
 		frontScore = 0;
 		backScore = 0;

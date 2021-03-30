@@ -159,6 +159,7 @@
     <ClCompile Include="GameWin.cpp" />
     <ClCompile Include="LoseScene.cpp" />
     <ClCompile Include="lvl1.cpp" />
+    <ClCompile Include="MenuUI.cpp" />
     <ClCompile Include="WinScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="GameWin.h" />
     <ClInclude Include="LoseScene.h" />
     <ClInclude Include="lvl1.h" />
+    <ClInclude Include="MenuUI.h" />
     <ClInclude Include="WinScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sound.h" />

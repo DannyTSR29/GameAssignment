@@ -50,7 +50,7 @@ void WinScene::Update() {
 	{
 		sound->stop();
 		soundPlay = false;
-		GameStateManager::getInstance()->changeGameState(1);
+		GameStateManager::getInstance()->changeGameState(2);
 	}
 }
 

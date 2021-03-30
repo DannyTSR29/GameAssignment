@@ -1,5 +1,6 @@
 #include "GameStateManager.h"
 #include "GameMenu.h"
+#include "MenuUI.h"
 #include "lvl1.h"
 #include "WinScene.h"
 #include "LoseScene.h"
@@ -26,6 +27,8 @@ GameStateManager::GameStateManager() {
 	GameMenu* dMenu = new GameMenu;
 	dMenu->Init();
 
+	MenuUI* dUI = new MenuUI;
+
 	lvl1* dlvl1 = new lvl1;
 
 	WinScene* dWin = new WinScene;
@@ -33,6 +36,7 @@ GameStateManager::GameStateManager() {
 	LoseScene* dLose = new LoseScene;
 
 	gameStateList.push_back(dMenu);
+	gameStateList.push_back(dUI);
 	gameStateList.push_back(dlvl1);
 	gameStateList.push_back(dWin);
 	gameStateList.push_back(dLose);

@@ -1,22 +1,24 @@
-#include "LoseScene.h"
+#include "MenuUI.h"
 #include "GameStateManager.h"
 
-LoseScene::LoseScene() {
+MenuUI::MenuUI() {
 	sprite = NULL;
 	texture = NULL;
 
 	sound->Init();
-	sound = new Sound("lose.wav", true);
-}
-
-LoseScene::~LoseScene() {
+	sound = new Sound("menuBgm.wav", true);
 
 }
 
-void LoseScene::Init() {
+MenuUI::~MenuUI() {
+}
+
+void MenuUI::Init() {
+	soundPlay = true;
+
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);
 
-	D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "gameOver.jpg", D3DX_DEFAULT, D3DX_DEFAULT,
+	D3DXCreateTextureFromFileEx(GameGraphic::getInstance()->getDevice(), "menuUI.jpg", D3DX_DEFAULT, D3DX_DEFAULT,
 		D3DX_DEFAULT, NULL, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED,
 		D3DX_DEFAULT, D3DX_DEFAULT, D3DCOLOR_XRGB(255, 255, 255),
 		NULL, NULL, &texture);
@@ -27,18 +29,20 @@ void LoseScene::Init() {
 
 	spriteRect.left = 0;
 	spriteRect.top = 0;
-	spriteRect.right = 841;
-	spriteRect.bottom = 604;
-
-	textRect.left = 1250;
-	textRect.top = 250;
 	spriteRect.right = 1252;
 	spriteRect.bottom = 624;
 
+
+	textRect.left = 1250;
+	textRect.top = 250;
+	textRect.right = 0;
+	textRect.bottom = 0;
+
 	sound->play();
+
 }
 
-void LoseScene::Update() {
+void MenuUI::Update() {
 	if (soundPlay == true)
 	{
 		sound->volumeDown();
@@ -47,18 +51,20 @@ void LoseScene::Update() {
 
 	if (GameInput::getInstance()->KeyboardKeyPressed(DIK_RETURN))
 	{
-		sound->stop();
 		soundPlay = false;
+		sound->stop();
 		GameStateManager::getInstance()->changeGameState(2);
 	}
+}
+
+
+
+
+void MenuUI::FixedUpdate() {
 
 }
 
-void LoseScene::FixedUpdate() {
-
-}
-
-void LoseScene::Draw() {
+void MenuUI::Draw() {
 	sprite->Begin(D3DXSPRITE_ALPHABLEND);
 
 	sprite->Draw(texture, &spriteRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
@@ -66,7 +72,7 @@ void LoseScene::Draw() {
 	sprite->End();
 }
 
-void LoseScene::Release() {
+void MenuUI::Release() {
 	sound->Release();
 	sound = NULL;
 
