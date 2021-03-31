@@ -70,11 +70,9 @@ void Player::Init()
 	spriteCentre = D3DXVECTOR2(0, 0);
 	position = D3DXVECTOR2(350, 458);
 	scaling = D3DXVECTOR2(0.5f, 0.5f);
+	characterSize = D3DXVECTOR2 (178,132);
 
-	characterSize.x = 178;
-	characterSize.y = 132;
-
-	Player::getInstance()->setBasketballQty(15);
+	Player::getInstance()->setBasketballQty(10);
 
 
 	D3DXCreateSprite(GameGraphic::getInstance()->getDevice(), &sprite);

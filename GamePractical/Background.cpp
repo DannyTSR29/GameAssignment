@@ -120,7 +120,7 @@ void Background::Update() {
 			timer = 0;
 			sound->stop();
 			soundPlay = false;
-			GameStateManager::getInstance()->changeGameState(4);
+			GameStateManager::getInstance()->changeGameState(3);
 		}
 	}
 
@@ -137,7 +137,7 @@ void Background::Update() {
 			timer = 0;
 			sound->stop();
 			soundPlay = false;
-			GameStateManager::getInstance()->changeGameState(5);
+			GameStateManager::getInstance()->changeGameState(4);
 		}
 	}
 
