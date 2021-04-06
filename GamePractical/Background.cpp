@@ -240,7 +240,7 @@ void Background::Draw() {
 	spriteHoop->Draw(textureHoop, &spriteHoopRect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 	spriteHoop->End();
 
-	line->Begin();
+	/*line->Begin();
 	line->Draw(basketballVertices, 5, D3DCOLOR_XRGB(100, 255, 120));
 
 	line->Draw(boardVertices, 5, D3DCOLOR_XRGB(0, 0, 255));
@@ -252,7 +252,7 @@ void Background::Draw() {
 	line->Draw(scoreVerticesBack, 5, D3DCOLOR_XRGB(255, 0, 0));
 
 
-	line->End();
+	line->End();*/
 
 
 }

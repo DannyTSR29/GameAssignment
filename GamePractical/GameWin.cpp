@@ -1,5 +1,6 @@
 #include "GameWin.h"
 #include "Player.h"
+#include "resource.h"
 
 GameWin* GameWin::instance = NULL;
 
@@ -79,7 +80,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		//	}
 
 		//}
-		else if (wParam == 82 || wParam == 71 || wParam == 66 || wParam == 187 || wParam == 189)
+		/*else if (wParam == 82 || wParam == 71 || wParam == 66 || wParam == 187 || wParam == 189)
 		{
 			if (wParam == 82)
 			{
@@ -122,7 +123,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 			printf("SP  :  %d  RGB  :  (%d,  %d,  %d)\n", dWin->speed, dWin->r, dWin->g, dWin->b);
 
-		}
+		}*/
 		
 
 
@@ -149,9 +150,9 @@ void GameWin::createWindow()
 	//	Filling wndClass. You are to refer to MSDN for each of the members details.
 	//	These are the fundamental structure members to be specify, in order to create your window.
 	wndClass.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);
-	/*wndClass.hCursor = LoadCursor(GetModuleHandle(NULL), MAKEINTRESOURCE(IDC_CURSOR1));
-	wndClass.hIcon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1));*/
+	//wndClass.hCursor = LoadCursor(GetModuleHandle(NULL), MAKEINTRESOURCE(IDC_CURSOR1));
 	wndClass.hInstance = hInstance;	//	GetModuleHandle(NULL);
+	wndClass.hIcon = static_cast<HICON>(LoadImage(hInstance, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 32, 32, 0));
 	wndClass.lpfnWndProc = WindowProcedure;
 	wndClass.lpszClassName = "My Window";
 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
@@ -164,7 +165,7 @@ void GameWin::createWindow()
 		Create the Window.
 	*/
 	//	You are to refer to MSDN for each of the parameters details.
-	g_hWnd = CreateWindowEx(0, wndClass.lpszClassName, "Danny's Window", WS_OVERLAPPEDWINDOW, 0, 100, 1269, 662, g_hWnd, NULL, hInstance, NULL);
+	g_hWnd = CreateWindowEx(0, wndClass.lpszClassName, "Spaceman Shooter", WS_OVERLAPPEDWINDOW, 0, 100, 1269, 662, g_hWnd, NULL, hInstance, NULL);
 	ShowWindow(g_hWnd, 1);
 
 	//	Some interesting function to try out.

@@ -1,5 +1,4 @@
 #include "Sound.h"
-#include <stdio.h>
 
 FMOD_SYSTEM* Sound::g_sound_system;
 

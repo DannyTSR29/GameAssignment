@@ -359,13 +359,6 @@ void Player::Draw()
 	}
 
 
-	//line->Begin();
-	//
-	//line->Draw(nextPosition, 5, D3DCOLOR_XRGB(100, 255, 120));
-
-	//line->End();
-
-
 	for (int i = 0; i < basketballList.size(); i++)
 	{
 		basketballList[i]->draw(spriteBasketball);

@@ -178,9 +178,16 @@
     <ClInclude Include="LoseScene.h" />
     <ClInclude Include="lvl1.h" />
     <ClInclude Include="MenuUI.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="WinScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sound.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameAssignment.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\basketball.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

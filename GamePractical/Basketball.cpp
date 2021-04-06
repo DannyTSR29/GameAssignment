@@ -70,8 +70,8 @@ void Basketball::release() {
 }
 
 void Basketball::init(D3DXVECTOR2 position, D3DXVECTOR2 velocityBasketball) {
-	Basketball::getInstance()->setPosition(position);
 	isUsing = true;
+	Basketball::getInstance()->setPosition(position);
 	Basketball::getInstance()->setVelocity(velocityBasketball);
 }
 
